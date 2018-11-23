@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ 
+	<xs:element name="configuration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="feature" type="feature" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+	    </xs:complexType>
+	</xs:element> 
+	      
+	<xs:complexType name="feature">
+		<xs:attribute name="automatic" type="xs:string"/>
+		<xs:attribute name="manual" type="xs:string"/>
+		<xs:attribute name="name" type="xs:string"/>
+	</xs:complexType> 
+	
+</xs:schema>

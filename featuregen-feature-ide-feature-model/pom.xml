@@ -1,16 +1,56 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>de.rhocas.featuregen</groupId>
-        <artifactId>featuregen-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../featuregen-parent</relativePath>
-    </parent>
-    
-    <artifactId>featuregen-feature-ide-feature-model</artifactId>
+	<parent>
+		<groupId>de.rhocas.featuregen</groupId>
+		<artifactId>featuregen-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../featuregen-parent</relativePath>
+	</parent>
+
+	<artifactId>featuregen-feature-ide-feature-model</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/xsd</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<packageName>de.rhocas.featuregen.featureide.model.feature</packageName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
