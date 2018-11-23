@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.rhocas.featuregen</groupId>
+        <artifactId>featuregen-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>featuregen-parent</relativePath>
+    </parent>
+
+    <artifactId>featuregen</artifactId>
+    <packaging>pom</packaging>
+
+    <name>feature-gen</name>
+    <description>feature-gen is a small open-source framework that lets you generate typesafe feature checks from FeatureIDE models</description>
+
+    <modules>
+        <module>featuregen-dependencies</module>
+        <module>featuregen-parent</module>
+        <module>featuregen-feature-ide-configuration-model</module>
+        <module>featuregen-feature-ide-feature-model</module>
+        <module>featuregen-annotation-processor</module>
+    </modules>
+
+</project>
