@@ -1,9 +1,14 @@
 package de.rhocas.featuregen.ap
 
+import de.rhocas.featuregen.featureide.model.feature.BranchedFeatureType
 import de.rhocas.featuregen.featureide.model.feature.FeatureModel
 import de.rhocas.featuregen.featureide.model.feature.FeatureType
+import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
+import java.lang.annotation.Target
+import java.util.EnumSet
+import java.util.Objects
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.RegisterGlobalsContext
@@ -12,13 +17,10 @@ import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.EnumerationTypeDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
+import org.eclipse.xtend.lib.macro.declaration.MutableEnumerationTypeDeclaration
 import org.eclipse.xtend.lib.macro.file.FileLocations
 import org.eclipse.xtend.lib.macro.file.FileSystemSupport
 import org.eclipse.xtend.lib.macro.file.Path
-import java.lang.annotation.Target
-import java.lang.annotation.ElementType
-import org.eclipse.xtend.lib.macro.declaration.MutableEnumerationTypeDeclaration
-import de.rhocas.featuregen.featureide.model.feature.BranchedFeatureType
 
 class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	
@@ -93,11 +95,11 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	private def registerSelectedFeatures(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
 		val root = featureModel.getRoot()
 		if (root !== null) {
-			registerAnnotationType(getSelectedFeatureAnnotationName(annotatedClass, root))
+			registerAnnotationType(getSelectedFeaturesAnnotationName(annotatedClass, root))
 		}
 	}
 	
-	private def String getSelectedFeatureAnnotationName(ClassDeclaration annotatedClass, FeatureType root)
+	private def String getSelectedFeaturesAnnotationName(ClassDeclaration annotatedClass, FeatureType root)
 		'''«annotatedClass.compilationUnit.packageName».«root.name»SelectedFeatures'''
 	
 	
@@ -130,20 +132,47 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	private def transformFeatureCheckService(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
 		val featureCheckService = getFeatureCheckServiceName(annotatedClass, root).findClass
+		val featureEnum = getFeatureEnumName(annotatedClass, root).findEnumerationType
+
+		featureCheckService.addField('activeFeatures') [
+			static = true
+			final = true
+			type = EnumSet.newTypeReference
+			initializer = '''«EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class )'''
+		]
 		
 		featureCheckService.addMethod('isFeatureActive') [
 			addParameter('feature', getFeatureEnumName(annotatedClass, root).newTypeReference())
 			returnType = primitiveBoolean
 			
 			body = '''
-				return false;
+				«Objects.newTypeReference».requireNonNull( feature, "The feature must not be null." );
+				
+				return activeFeatures.contains( feature );
+			'''
+		]
+		
+		val selectedFeaturesAnnotation = getSelectedFeaturesAnnotationName(annotatedClass, root).findAnnotationType
+		featureCheckService.addMethod('setActiveVariant') [
+			addParameter('variant', Class.newTypeReference(newWildcardTypeReference))
+			
+			body = '''
+				«Objects.newTypeReference».requireNonNull( variant, "The variant must not be null." );
+				
+				final «selectedFeaturesAnnotation.newTypeReference» selectedFeaturesAnnotation = variant.getAnnotation( «selectedFeaturesAnnotation.newTypeReference».class );
+				final «featureEnum.newTypeReference»[] selectedFeatures = selectedFeaturesAnnotation.value( );
+				
+				activeFeatures.clear();
+				for ( final «featureEnum.newTypeReference» selectedFeature : selectedFeatures ) {
+					activeFeatures.add( selectedFeature );
+				}
 			'''
 		]
 	}
 	
 	private def transformSelectedFeatures(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
-		val selectedFeatures = getSelectedFeatureAnnotationName(annotatedClass, root).findAnnotationType
+		val selectedFeatures = getSelectedFeaturesAnnotationName(annotatedClass, root).findAnnotationType
 
 		selectedFeatures.addAnnotation(Retention.newAnnotationReference [
 			setEnumValue('value', (RetentionPolicy.findTypeGlobally as EnumerationTypeDeclaration).findDeclaredValue(RetentionPolicy.RUNTIME.name))
