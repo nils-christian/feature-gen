@@ -23,6 +23,7 @@
         <module>featuregen-feature-ide-configuration-model</module>
         <module>featuregen-feature-ide-feature-model</module>
         <module>featuregen-annotation-processor</module>
+        <module>featuregen-annotation-processor-test</module>
     </modules>
 
 </project>
