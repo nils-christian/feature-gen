@@ -21,6 +21,10 @@ import org.eclipse.xtend.lib.macro.declaration.MutableEnumerationTypeDeclaration
 import org.eclipse.xtend.lib.macro.file.FileLocations
 import org.eclipse.xtend.lib.macro.file.FileSystemSupport
 import org.eclipse.xtend.lib.macro.file.Path
+import java.util.List
+import java.util.Arrays
+import java.util.Collections
+import java.util.Set
 
 class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	
@@ -134,14 +138,38 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val featureCheckService = getFeatureCheckServiceName(annotatedClass, root).findClass
 		val featureEnum = getFeatureEnumName(annotatedClass, root).findEnumerationType
 
+		featureCheckService.final = true
+		featureCheckService.docComment = '''
+		This service allows to set the currently active variant and to check which features are currently active.<br/>
+		<br/>
+		Note that this class is conditionally thread safe. This means that it is possible to concurrently set the 
+		variant and check the features, but it is possible that a check for a feature returns {@code false} between
+		the switching from one variant to another even if both variants contain said feature. Add additional
+		synchronization if switching the variant must be an atomic operation.<br/>
+		<br/>
+		This service is generated.
+		'''
+
 		featureCheckService.addField('activeFeatures') [
 			static = true
 			final = true
-			type = EnumSet.newTypeReference
-			initializer = '''«EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class )'''
+			type = Set.newTypeReference
+			initializer = '''«Collections.newTypeReference()».synchronizedSet( «EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class ) )'''
 		]
-		
+
 		featureCheckService.addMethod('isFeatureActive') [
+			docComment = '''
+				Checks whether the given feature is currently active or not.
+				
+				@param feature
+					The feature to check. Must not be {@code null}.
+					
+				@return true if and only if the given feature is active.
+				
+				@throws NullPointerException
+					If the given feature is {@code null}.
+			'''
+			
 			addParameter('feature', getFeatureEnumName(annotatedClass, root).newTypeReference())
 			returnType = primitiveBoolean
 			
@@ -154,18 +182,27 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		
 		val selectedFeaturesAnnotation = getSelectedFeaturesAnnotationName(annotatedClass, root).findAnnotationType
 		featureCheckService.addMethod('setActiveVariant') [
+			docComment = '''
+				Sets the currently active variant.
+				
+				@param variant
+					The new variant. Must not be {@code null} and must be annotated with {@link «selectedFeaturesAnnotation.newTypeReference()»}.
+					
+				@throws NullPointerException
+					If the given variant is {@code null} or not annotated with {@link «selectedFeaturesAnnotation.newTypeReference()»}.
+			'''
+			
 			addParameter('variant', Class.newTypeReference(newWildcardTypeReference))
 			
 			body = '''
 				«Objects.newTypeReference».requireNonNull( variant, "The variant must not be null." );
 				
 				final «selectedFeaturesAnnotation.newTypeReference» selectedFeaturesAnnotation = variant.getAnnotation( «selectedFeaturesAnnotation.newTypeReference».class );
-				final «featureEnum.newTypeReference»[] selectedFeatures = selectedFeaturesAnnotation.value( );
+				«Objects.newTypeReference()».requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with «selectedFeaturesAnnotation.simpleName»." );
+				final «List.newTypeReference(featureEnum.newSelfTypeReference)» selectedFeatures = «Arrays.newTypeReference()».asList( selectedFeaturesAnnotation.value( ) );
 				
-				activeFeatures.clear();
-				for ( final «featureEnum.newTypeReference» selectedFeature : selectedFeatures ) {
-					activeFeatures.add( selectedFeature );
-				}
+				activeFeatures.clear( );
+				activeFeatures.addAll( selectedFeatures );
 			'''
 		]
 	}
