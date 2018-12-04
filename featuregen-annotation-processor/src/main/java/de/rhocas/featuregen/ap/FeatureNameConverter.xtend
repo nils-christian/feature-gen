@@ -9,7 +9,7 @@ package class FeatureNameConverter {
 		val suffix = annotation.getStringValue('suffix')
 		val simpleFeatureName = prefix + rawFeatureName.replaceAll('(\\W)', '') + suffix
 		
-		simpleFeatureName
+		simpleFeatureName.toUpperCase
 	}
 	
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <feature automatic="selected" name="FeatureGenTest"/>
+    <feature automatic="selected" name="F1"/>
+    <feature automatic="selected" name="F2"/>
+    <feature automatic="selected" name="F4"/>
+    <feature manual="selected" name="F4.1"/>
+    <feature automatic="unselected" name="F4.2"/>
+</configuration>
