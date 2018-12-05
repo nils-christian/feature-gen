@@ -106,7 +106,8 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	private def getSelectedFeatures(Configuration configurationModel, ClassDeclaration annotatedClass, extension TransformationContext context) {
 		val featureEnum = getFeatureEnum(configurationModel, annotatedClass, context)
 		val features = configurationModel.feature
-		val annotationReference = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
+		val featuresClass = getAnnotatedFeaturesClass(annotatedClass, context) as ClassDeclaration
+		val annotationReference = featuresClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
 		
 		features.map[it.name]
 			    .map[convertToValidSimpleFeatureName(it, annotationReference)]

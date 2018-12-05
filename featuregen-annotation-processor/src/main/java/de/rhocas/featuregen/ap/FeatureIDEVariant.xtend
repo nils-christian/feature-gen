@@ -23,20 +23,6 @@ annotation FeatureIDEVariant {
 	String value = ''
 	
 	/**
-	 * The prefix prepended to each generated feature.
-	 * 
-	 * @since 1.0.0
-	 */
-	String prefix = ''
-	
-	/**
-	 * The suffix appended to each generated feature. This is set to {@code _FEATURE} by default.
-	 * 
-	 * @since 1.0.0
-	 */
-	String suffix = '_FEATURE'
-	
-	/**
 	 * The class which is annotated with {@link FeatureIDEFeatures}.
 	 * 
 	 * @since 1.0.0
