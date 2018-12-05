@@ -125,10 +125,10 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		if (modelFilePath.isFile) {
 			val featureModel = readFeatureModel(modelFilePath, context)
 			
-			transformFeatureCheckService(annotatedClass, featureModel, context)
-			transformSelectedFeatures(annotatedClass, featureModel, context)
 			transformFeature(annotatedClass, featureModel, context)
+			transformSelectedFeatures(annotatedClass, featureModel, context)
 			transformVariant(annotatedClass, featureModel, context)
+			transformFeatureCheckService(annotatedClass, featureModel, context)
 		} else {
 			annotatedClass.addError('''The model file could not be found (Assumed path was: '«modelFilePath»').''')
 		}
@@ -170,7 +170,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 					If the given feature is {@code null}.
 			'''
 			
-			addParameter('feature', getFullQualifiedFeaturesEnumName(annotatedClass, root.name).newTypeReference())
+			addParameter('feature', getFullQualifiedFeaturesEnumName(annotatedClass, root.name).findTypeGlobally.newTypeReference())
 			returnType = primitiveBoolean
 			
 			body = '''
