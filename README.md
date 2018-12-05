@@ -13,3 +13,24 @@ In order to use feature-gen in your project, simply add the Maven dependency to 
 	</dependency>
   
 Once you have the dependency in your classpath, you can add classes with the annotations *FeatureIDEFeatures* and *FeatureIDEVariant* to your project. Both classes use Xtend's active annotations mechanism to generate the required classes and enums to check features from your feature model.
+
+In its simplest form, you have your feature model in a file named *model.xml* next to your annotated class.
+
+	@FeatureIDEFeatures
+	class Features {   
+	}
+	
+Your annotated variant class has to reference the feature class. In the following case it is assumed that the variant configuration is in a file named *Variant1.xml* next to the annotated class.
+
+	@FeatureIDEVariant(featuresClass = Features)
+	class Variant1 { 
+	}
+	
+Now feature-gen generates everything to use the feature model in your application. Assuming your root feature is named *Root*, you can do the following:
+
+	RootFeatureCheckService featureCheckService = new RootFeatureCheckService( );
+	featureCheckService.setActiveVariant( Variant1.class );
+
+	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
+	   ...
+	}
