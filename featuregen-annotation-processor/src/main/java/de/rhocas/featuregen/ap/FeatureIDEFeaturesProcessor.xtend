@@ -41,6 +41,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			registerFeatureCheckService(annotatedClass, featureModel, context)
 			registerSelectedFeatures(annotatedClass, featureModel, context)
 			registerFeature(annotatedClass, featureModel, context)
+			registerVariant(annotatedClass, featureModel, context)
 		}
 	}
 	
@@ -114,8 +115,20 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		}
 	} 
 	
+	
 	private def String getFeatureEnumName(ClassDeclaration annotatedClass, FeatureType root) {
 		'''«annotatedClass.compilationUnit.packageName».«root.name»Feature'''
+	}
+	
+	private def registerVariant(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
+		val root = featureModel.getRoot()
+		if (root !== null) {
+			registerInterface(getVariantName(annotatedClass, root))
+		}
+	}
+	
+	private def String getVariantName(ClassDeclaration annotatedClass, FeatureType root) {
+		'''«annotatedClass.compilationUnit.packageName».«root.name»Variant'''
 	}
 	
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
@@ -128,6 +141,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			transformFeatureCheckService(annotatedClass, featureModel, context)
 			transformSelectedFeatures(annotatedClass, featureModel, context)
 			transformFeature(annotatedClass, featureModel, context)
+			transformVariant(annotatedClass, featureModel, context)
 		} else {
 			annotatedClass.addError('''The model file could not be found (Assumed path was: '«modelFilePath»').''')
 		}
@@ -151,7 +165,6 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		'''
 
 		featureCheckService.addField('activeFeatures') [
-			static = true
 			final = true
 			type = Set.newTypeReference
 			initializer = '''«Collections.newTypeReference()».synchronizedSet( «EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class ) )'''
@@ -180,6 +193,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			'''
 		]
 		
+		val variant = getVariantName(annotatedClass, root).findInterface
 		val selectedFeaturesAnnotation = getSelectedFeaturesAnnotationName(annotatedClass, root).findAnnotationType
 		featureCheckService.addMethod('setActiveVariant') [
 			docComment = '''
@@ -192,7 +206,7 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 					If the given variant is {@code null} or not annotated with {@link «selectedFeaturesAnnotation.newTypeReference()»}.
 			'''
 			
-			addParameter('variant', Class.newTypeReference(newWildcardTypeReference))
+			addParameter('variant', Class.newTypeReference(newWildcardTypeReference(variant.newSelfTypeReference)))
 			
 			body = '''
 				«Objects.newTypeReference».requireNonNull( variant, "The variant must not be null." );
@@ -211,6 +225,12 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val root = featureModel.getRoot()
 		val selectedFeatures = getSelectedFeaturesAnnotationName(annotatedClass, root).findAnnotationType
 
+		selectedFeatures.docComment = '''
+		This annotation is used to mark which features the annotated variant provides.<br/>
+		<br/>
+		This annotation is generated.
+		'''
+
 		selectedFeatures.addAnnotation(Retention.newAnnotationReference [
 			setEnumValue('value', (RetentionPolicy.findTypeGlobally as EnumerationTypeDeclaration).findDeclaredValue(RetentionPolicy.RUNTIME.name))
 		])
@@ -219,6 +239,8 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		])
 		
 		selectedFeatures.addAnnotationTypeElement('value') [ 
+			docComment = 'The selected features.'		
+				
 			type = getFeatureEnumName(annotatedClass, root).findEnumerationType.newSelfTypeReference.newArrayTypeReference
 		]
 	}
@@ -227,6 +249,12 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val root = featureModel.getRoot()
 		val feature = getFeatureEnumName(annotatedClass, root).findEnumerationType
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
+		
+		feature.docComment = '''
+		This enumeration contains all available features.<br/>
+		<br/>
+		This enumeration is generated.
+		'''
 		
 		addFeaturesToEnum(feature, annotation, root)
 	}
@@ -241,6 +269,17 @@ class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 				}
 			}
 		}
+	}
+	
+		
+	private def transformVariant(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
+		val root = featureModel.getRoot()
+		val variant = getVariantName(annotatedClass, root).findInterface
+		variant.docComment = '''
+		This is a marker interface for all variants.<br/>
+		<br/>
+		This interface is generated.
+		'''
 	}
 	
 }

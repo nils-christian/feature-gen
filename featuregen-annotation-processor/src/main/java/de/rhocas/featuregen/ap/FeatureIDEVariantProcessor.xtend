@@ -17,9 +17,31 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		val configurationModel = getConfigurationModel(annotatedClass, context)
+		makeFinal(annotatedClass)
 		addSelectedFeaturesAnnotation(configurationModel, annotatedClass, context)
+		addVariantInterface(configurationModel, annotatedClass, context)
 	}
-
+	
+	private def makeFinal(MutableClassDeclaration annotatedClass) {
+		annotatedClass.final = true
+	}
+	
+	private def addVariantInterface(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		val variantInterface = getVariantInterface(configurationModel, annotatedClass, context)
+		annotatedClass.implementedInterfaces = #[variantInterface.newSelfTypeReference]
+	}
+	
+	private def getVariantInterface(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		val fullQualifiedName = getFullQualifiedVariantName(configurationModel, annotatedClass, context)
+		fullQualifiedName.findTypeGlobally
+	}
+	
+	private def String getFullQualifiedVariantName(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		var featuresPackage = getFeaturesPackage(annotatedClass, context)
+		val root = getRoot(configurationModel)
+		'''«featuresPackage».«root.name»Variant'''
+	}
+	
 	private def void addSelectedFeaturesAnnotation(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		val selectedFeaturesAnnotation = getSelectedFeaturesAnnotation(configurationModel, annotatedClass, context)
 		annotatedClass.addAnnotation(selectedFeaturesAnnotation.newAnnotationReference [
