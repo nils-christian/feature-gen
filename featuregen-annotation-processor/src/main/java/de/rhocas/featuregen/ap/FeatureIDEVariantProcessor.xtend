@@ -1,4 +1,4 @@
-package de.rhocas.featuregen.ap
+     package de.rhocas.featuregen.ap
 
 import de.rhocas.featuregen.featureide.model.configuration.Configuration
 import javax.xml.bind.JAXBContext
@@ -12,6 +12,7 @@ import org.eclipse.xtend.lib.macro.file.Path
 
 class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 
+	val extension NameProvider = new NameProvider
 	val extension FeatureNameConverter = new FeatureNameConverter
 	val jaxbContext = JAXBContext.newInstance(Configuration)
 
@@ -37,9 +38,9 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	}
 	
 	private def String getFullQualifiedVariantName(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		var featuresPackage = getFeaturesPackage(annotatedClass, context)
+		var annotatedFeaturesClass = getAnnotatedFeaturesClass(annotatedClass, context)
 		val root = getRoot(configurationModel)
-		'''«featuresPackage».«root.name»Variant'''
+		getFullQualifiedVariantInterfaceName(annotatedFeaturesClass, root.name)
 	}
 	
 	private def void addSelectedFeaturesAnnotation(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
@@ -55,20 +56,14 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	}
 
 	private def String getFullQualifiedSelectedFeaturesAnnotationName(Configuration configurationModel, MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		var featuresPackage = getFeaturesPackage(annotatedClass, context)
+		var annotatedFeaturesClass = getAnnotatedFeaturesClass(annotatedClass, context)
 		val root = getRoot(configurationModel)
-		'''«featuresPackage».«root.name»SelectedFeatures'''
+		getFullQualifiedSelectedFeaturesAnnotationName(annotatedFeaturesClass, root.name)
 	}
 
-	private def getFeaturesPackage(ClassDeclaration annotatedClass, extension TransformationContext context) {
+	private def getAnnotatedFeaturesClass(ClassDeclaration annotatedClass, extension TransformationContext context) {
 		val annotationReference = annotatedClass.findAnnotation(FeatureIDEVariant.findTypeGlobally)
-		
-		var featuresPackage = annotationReference.getStringValue('featuresPackage')
-		if (featuresPackage.isEmpty) {
-			featuresPackage = annotatedClass.compilationUnit.packageName
-		}
-
-		return featuresPackage
+		annotationReference.getClassValue('featuresClass').type
 	}
 	
 	private def getRoot(Configuration configurationModel) {
@@ -124,9 +119,9 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	}
 	
 	private def String getFullQualifiedFeatureEnumName(Configuration configurationModel, ClassDeclaration annotatedClass, extension TransformationContext context) {
+		var annotatedFeaturesClass = getAnnotatedFeaturesClass(annotatedClass, context)
 		val root = getRoot(configurationModel)
-		var featuresPackage = getFeaturesPackage(annotatedClass, context)
-		'''«featuresPackage».«root.name»Feature'''
+		getFullQualifiedFeaturesEnumName(annotatedFeaturesClass, root.name)
 	}
 
 }

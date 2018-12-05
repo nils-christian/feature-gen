@@ -37,10 +37,10 @@ annotation FeatureIDEVariant {
 	String suffix = '_FEATURE'
 	
 	/**
-	 * The package in which the features are contained. If this value is not given, the package of the annotated class is used instead.
+	 * The class which is annotated with {@link FeatureIDEFeatures}.
 	 * 
 	 * @since 1.0.0
 	 */
-	String featuresPackage = ''
+	Class<?> featuresClass
 	
 }
