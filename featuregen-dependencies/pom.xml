@@ -9,6 +9,9 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+	<description>feature-gen is a small open-source framework that lets you generate typesafe feature checks from FeatureIDE models.</description>
+	<url>https://github.com/nils-christian/feature-gen</url>
+
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -68,6 +71,44 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Nils Christian Ehmke</name>
+			<email>nils@rhocas.de</email>
+			<organization>Private</organization>
+			<organizationUrl>https://github.com/nils-christian</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/nils-christian/feature-gen.git</connection>
+		<developerConnection>scm:git:ssh://github.com:nils-christian/feature-gen.git</developerConnection>
+		<url>http://github.com/nils-christian/feature-gen/tree/master</url>
+	</scm>
+
+	<issueManagement>
+		<url>https://github.com/nils-christian/feature-gen/issues</url>
+	</issueManagement>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -101,5 +142,29 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
