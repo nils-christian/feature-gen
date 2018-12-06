@@ -34,3 +34,7 @@ Now feature-gen generates everything to use the feature model in your applicatio
 	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
 	   ...
 	}
+
+## License
+
+feature-gen is licensed under the MIT-License. The complete license text can be found in the provided file LICENSE.
