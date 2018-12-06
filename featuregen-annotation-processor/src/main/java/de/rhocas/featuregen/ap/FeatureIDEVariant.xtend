@@ -31,6 +31,8 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 
 /**
+ * This active annotation is used to generate a variant from a FeatureIDE configuration file.
+ * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.0.0

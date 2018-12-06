@@ -31,6 +31,8 @@ import java.lang.annotation.Target
 import org.eclipse.xtend.lib.macro.Active
 
 /**
+ * This active annotation is used to generate the features from a FeatureIDE model file.
+ * 
  * @author Nils Christian Ehmke
  * 
  * @since 1.0.0
