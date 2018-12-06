@@ -17,10 +17,24 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	val jaxbContext = JAXBContext.newInstance(Configuration)
 
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		val configurationModel = getConfigurationModel(annotatedClass, context)
 		makeFinal(annotatedClass)
-		addSelectedFeaturesAnnotation(configurationModel, annotatedClass, context)
-		addVariantInterface(configurationModel, annotatedClass, context)
+		
+		val configurationModel = getConfigurationModel(annotatedClass, context)
+		if (configurationModel !== null && featuresAnnotationCanBeFound(annotatedClass, context)) {
+			addSelectedFeaturesAnnotation(configurationModel, annotatedClass, context)
+			addVariantInterface(configurationModel, annotatedClass, context)
+		}
+	}
+	
+	def featuresAnnotationCanBeFound(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		val featuresClass = getAnnotatedFeaturesClass(annotatedClass, context) as ClassDeclaration
+		val annotationReference = featuresClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
+		if (annotationReference !== null) {
+			return true
+		} else {
+			annotatedClass.addError('''The referenced class «featuresClass.simpleName» must be annotated with «FeatureIDEFeatures.simpleName».''')
+			return false
+		}
 	}
 	
 	private def makeFinal(MutableClassDeclaration annotatedClass) {
@@ -73,7 +87,11 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 
 	private def getConfigurationModel(ClassDeclaration annotatedClass, extension TransformationContext context) {
 		val modelFilePath = getModelFilePath(annotatedClass, context)
-		readConfigurationModel(modelFilePath, context)
+		if (modelFilePath.isFile) {
+			readConfigurationModel(modelFilePath, context)
+		} else {
+			annotatedClass.addError('''The configuration file could not be found (Assumed path was: '«modelFilePath»').''')
+		}
 	}
 
 	private def getModelFilePath(ClassDeclaration annotatedClass, extension TransformationContext context) {
@@ -111,7 +129,8 @@ class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		
 		features.map[it.name]
 			    .map[convertToValidSimpleFeatureName(it, annotationReference)]
-				.map[featureEnum.findDeclaredValue(it)]
+			    .map[featureEnum.findDeclaredValue(it)]
+		        .filterNull
 	}
 	
 	private def getFeatureEnum(Configuration configurationModel, ClassDeclaration annotatedClass, extension TransformationContext context) {
