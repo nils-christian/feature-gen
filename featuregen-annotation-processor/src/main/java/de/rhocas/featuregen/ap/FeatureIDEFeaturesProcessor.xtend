@@ -333,7 +333,9 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	private def void addFeaturesToEnum(MutableEnumerationTypeDeclaration enumeration, AnnotationReference annotationReference, FeatureType type) {
 		if (type !== null) {
 			if (!Boolean.TRUE.equals(type.abstract)) {
-				enumeration.addValue(type.name.convertToValidSimpleFeatureName(annotationReference)) []
+				enumeration.addValue(type.name.convertToValidSimpleFeatureName(annotationReference)) [
+					docComment = type.description 
+				]
 			}
 			
 			if (type instanceof BranchedFeatureType) {

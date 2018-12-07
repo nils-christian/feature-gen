@@ -4,8 +4,15 @@
     <struct>
         <and abstract="true" mandatory="true" name="Root">
             <and name="F1">
+                <description>
+This is Feature 1.
+</description>
                 <and mandatory="true" name="F2">
-                    <feature name="F2.1"/>
+                    <feature name="F2.1">
+                        <description>
+This is feature 2.1.
+</description>
+                    </feature>
                     <feature name="F2.2"/>
                 </and>
                 <or name="F3">
@@ -59,5 +66,8 @@ Abc
         <feature name="F3.2"/>
         <feature name="F4"/>
         <feature name="F4.2"/>
+        <feature name="F5"/>
+        <feature name="F5.1"/>
+        <feature name="F5.2"/>
     </featureOrder>
 </featureModel>

@@ -51,7 +51,9 @@ final class FeatureIDEFeaturesProcessorTest {
 			    <properties/>
 			    <struct>
 			    	<and mandatory="true" name="Root">
-						<feature name="F1"/>
+						<feature name="F1">
+							<description>This is Feature 1.</description>
+						</feature>
 					</and>
 			    </struct>
 			</featureModel>
@@ -93,6 +95,9 @@ final class FeatureIDEFeaturesProcessorTest {
 			public enum RootFeature {
 			  ROOT_FEATURE,
 			  
+			  /**
+			   * This is Feature 1.
+			   */
 			  F1_FEATURE;
 			}
 			
