@@ -46,8 +46,8 @@ annotation FeatureIDEVariant {
 	 * The path to a variant configuration file from the {@code FeatureIDE} containing a set of features. The file path is usually relative to the annotated
 	 * class. If the file path starts with a slash ({@code /}), the file path is assumed to be relative to the project source folder. If this value is not
 	 * given at all, it is assumed that the configuration model is contained in an xml file next to the annotated class with the same name as the annotated
-	 * class.<br/>
-	 * <br/>
+	 * class.<br>
+	 * <br>
 	 * Please note: Due to restrictions of the active annotations, the file <b>must</b> be contained in the same project and the same source folder
 	 * as the annotated class. Otherwise a build with various build tools might fail.
 	 * 

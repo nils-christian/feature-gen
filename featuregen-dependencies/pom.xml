@@ -6,18 +6,21 @@
 
 	<groupId>de.rhocas.featuregen</groupId>
 	<artifactId>featuregen-dependencies</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<description>feature-gen is a small open-source framework that lets you generate typesafe feature checks from FeatureIDE models.</description>
 	<url>https://github.com/nils-christian/feature-gen</url>
-
+	<name>feature-gen</name>
+	
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<jaxb2.maven.plugin.version>2.4</jaxb2.maven.plugin.version>
+		<maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+		<maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
 		<jacoco.version>0.8.2</jacoco.version>
 
 		<xtend.version>2.14.0</xtend.version>
@@ -30,17 +33,17 @@
 			<dependency>
 				<groupId>de.rhocas.featuregen</groupId>
 				<artifactId>featuregen-annotation-processor</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.rhocas.featuregen</groupId>
 				<artifactId>featuregen-feature-ide-configuration-model</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.rhocas.featuregen</groupId>
 				<artifactId>featuregen-feature-ide-feature-model</artifactId>
-				<version>1.0.0-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.xtend</groupId>
@@ -133,6 +136,16 @@
 							</configuration>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${maven.source.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven.javadoc.plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
