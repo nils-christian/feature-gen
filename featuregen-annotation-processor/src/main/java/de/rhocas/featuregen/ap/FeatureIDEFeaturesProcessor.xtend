@@ -51,6 +51,7 @@ import java.util.List
 import java.util.Arrays
 import java.util.Collections
 import java.util.Set
+import org.eclipse.xtend.lib.macro.declaration.Visibility
 
 /**
  * This is the annotation processor for {@link FeatureIDEFeatures}.
@@ -179,12 +180,9 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
 		featureCheckService.final = true
 		featureCheckService.docComment = '''
-		This service allows to set the currently active variant and to check which features are currently active.<br/>
+		This service allows to check which features are currently active.<br/>
 		<br/>
-		Note that this class is conditionally thread safe. This means that it is possible to concurrently set the 
-		variant and check the features, but it is possible that a check for a feature returns {@code false} between
-		the switching from one variant to another even if both variants contain said feature. Add additional
-		synchronization if switching the variant must be an atomic operation.<br/>
+		Note that instances of this class are immutable and thus inherent thread safe.<br/>
 		<br/>
 		This service is generated.
 		'''
@@ -192,7 +190,16 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		featureCheckService.addField('activeFeatures') [
 			final = true
 			type = Set.newTypeReference
-			initializer = '''«Collections.newTypeReference()».synchronizedSet( «EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class ) )'''
+		]
+		
+		featureCheckService.addConstructor [
+			visibility = Visibility.PRIVATE
+			addParameter('selectedFeatures', List.newTypeReference(featureEnum.newSelfTypeReference))
+			
+			body = '''
+				activeFeatures = «EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class );
+				activeFeatures.addAll( selectedFeatures );
+			'''
 		]
 
 		featureCheckService.addMethod('isFeatureActive') [
@@ -220,12 +227,17 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		
 		val variant = getVariantName(annotatedClass, root).findInterface
 		val selectedFeaturesAnnotation = getFullQualifiedSelectedFeaturesAnnotationName(annotatedClass, root.name).findAnnotationType
-		featureCheckService.addMethod('setActiveVariant') [
+		featureCheckService.addMethod('of') [
+			returnType = featureCheckService.newSelfTypeReference
+			static = true
+			
 			docComment = '''
-				Sets the currently active variant.
+				Creates a new instance of this service with the features of the given variant.
 				
 				@param variant
 					The new variant. Must not be {@code null} and must be annotated with {@link «selectedFeaturesAnnotation.newTypeReference()»}.
+				
+				@return A new feature check service.
 					
 				@throws NullPointerException
 					If the given variant is {@code null} or not annotated with {@link «selectedFeaturesAnnotation.newTypeReference()»}.
@@ -240,8 +252,22 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 				«Objects.newTypeReference()».requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with «selectedFeaturesAnnotation.simpleName»." );
 				final «List.newTypeReference(featureEnum.newSelfTypeReference)» selectedFeatures = «Arrays.newTypeReference()».asList( selectedFeaturesAnnotation.value( ) );
 				
-				activeFeatures.clear( );
-				activeFeatures.addAll( selectedFeatures );
+				return new «featureCheckService.newSelfTypeReference»( selectedFeatures );
+			'''
+		]
+		
+		featureCheckService.addMethod('empty') [
+			returnType = featureCheckService.newSelfTypeReference
+			static = true
+			
+			docComment = '''
+				Creates a new instance of this service without any active features.
+				
+				@return A new feature check service.
+			'''
+			
+			body = '''
+				return new «featureCheckService.newSelfTypeReference»( «Collections.findTypeGlobally.newSelfTypeReference».emptyList( ) );
 			'''
 		]
 	}

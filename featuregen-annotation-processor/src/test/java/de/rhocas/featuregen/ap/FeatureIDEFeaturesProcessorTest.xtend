@@ -111,19 +111,21 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootVariant;
 			
 			/**
-			 * This service allows to set the currently active variant and to check which features are currently active.<br/>
+			 * This service allows to check which features are currently active.<br/>
 			 * <br/>
-			 * Note that this class is conditionally thread safe. This means that it is possible to concurrently set the 
-			 * variant and check the features, but it is possible that a check for a feature returns {@code false} between
-			 * the switching from one variant to another even if both variants contain said feature. Add additional
-			 * synchronization if switching the variant must be an atomic operation.<br/>
+			 * Note that instances of this class are immutable and thus inherent thread safe.<br/>
 			 * <br/>
 			 * This service is generated.
 			 * 
 			 */
 			@SuppressWarnings("all")
 			public final class RootFeatureCheckService {
-			  private final Set activeFeatures = Collections.synchronizedSet( EnumSet.noneOf( RootFeature.class ) );
+			  private final Set activeFeatures;
+			  
+			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures) {
+			    activeFeatures = EnumSet.noneOf( RootFeature.class );
+			    activeFeatures.addAll( selectedFeatures );
+			  }
 			  
 			  /**
 			   * Checks whether the given feature is currently active or not.
@@ -144,24 +146,35 @@ final class FeatureIDEFeaturesProcessorTest {
 			  }
 			  
 			  /**
-			   * Sets the currently active variant.
+			   * Creates a new instance of this service with the features of the given variant.
 			   * 
 			   * @param variant
 			   * 	The new variant. Must not be {@code null} and must be annotated with {@link RootSelectedFeatures}.
+			   * 
+			   * @return A new feature check service.
 			   * 	
 			   * @throws NullPointerException
 			   * 	If the given variant is {@code null} or not annotated with {@link RootSelectedFeatures}.
 			   * 
 			   */
-			  public void setActiveVariant(final Class<? extends RootVariant> variant) {
+			  public static RootFeatureCheckService of(final Class<? extends RootVariant> variant) {
 			    Objects.requireNonNull( variant, "The variant must not be null." );
 			    
 			    final RootSelectedFeatures selectedFeaturesAnnotation = variant.getAnnotation( RootSelectedFeatures.class );
 			    Objects.requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with RootSelectedFeatures." );
 			    final List<RootFeature> selectedFeatures = Arrays.asList( selectedFeaturesAnnotation.value( ) );
 			    
-			    activeFeatures.clear( );
-			    activeFeatures.addAll( selectedFeatures );
+			    return new RootFeatureCheckService( selectedFeatures );
+			  }
+			  
+			  /**
+			   * Creates a new instance of this service without any active features.
+			   * 
+			   * @return A new feature check service.
+			   * 
+			   */
+			  public static RootFeatureCheckService empty() {
+			    return new RootFeatureCheckService( Collections.emptyList( ) );
 			  }
 			}
 			
@@ -275,19 +288,21 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootVariant;
 			
 			/**
-			 * This service allows to set the currently active variant and to check which features are currently active.<br/>
+			 * This service allows to check which features are currently active.<br/>
 			 * <br/>
-			 * Note that this class is conditionally thread safe. This means that it is possible to concurrently set the 
-			 * variant and check the features, but it is possible that a check for a feature returns {@code false} between
-			 * the switching from one variant to another even if both variants contain said feature. Add additional
-			 * synchronization if switching the variant must be an atomic operation.<br/>
+			 * Note that instances of this class are immutable and thus inherent thread safe.<br/>
 			 * <br/>
 			 * This service is generated.
 			 * 
 			 */
 			@SuppressWarnings("all")
 			public final class RootFeatureCheckService {
-			  private final Set activeFeatures = Collections.synchronizedSet( EnumSet.noneOf( RootFeature.class ) );
+			  private final Set activeFeatures;
+			  
+			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures) {
+			    activeFeatures = EnumSet.noneOf( RootFeature.class );
+			    activeFeatures.addAll( selectedFeatures );
+			  }
 			  
 			  /**
 			   * Checks whether the given feature is currently active or not.
@@ -308,24 +323,35 @@ final class FeatureIDEFeaturesProcessorTest {
 			  }
 			  
 			  /**
-			   * Sets the currently active variant.
+			   * Creates a new instance of this service with the features of the given variant.
 			   * 
 			   * @param variant
 			   * 	The new variant. Must not be {@code null} and must be annotated with {@link RootSelectedFeatures}.
+			   * 
+			   * @return A new feature check service.
 			   * 	
 			   * @throws NullPointerException
 			   * 	If the given variant is {@code null} or not annotated with {@link RootSelectedFeatures}.
 			   * 
 			   */
-			  public void setActiveVariant(final Class<? extends RootVariant> variant) {
+			  public static RootFeatureCheckService of(final Class<? extends RootVariant> variant) {
 			    Objects.requireNonNull( variant, "The variant must not be null." );
 			    
 			    final RootSelectedFeatures selectedFeaturesAnnotation = variant.getAnnotation( RootSelectedFeatures.class );
 			    Objects.requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with RootSelectedFeatures." );
 			    final List<RootFeature> selectedFeatures = Arrays.asList( selectedFeaturesAnnotation.value( ) );
 			    
-			    activeFeatures.clear( );
-			    activeFeatures.addAll( selectedFeatures );
+			    return new RootFeatureCheckService( selectedFeatures );
+			  }
+			  
+			  /**
+			   * Creates a new instance of this service without any active features.
+			   * 
+			   * @return A new feature check service.
+			   * 
+			   */
+			  public static RootFeatureCheckService empty() {
+			    return new RootFeatureCheckService( Collections.emptyList( ) );
 			  }
 			}
 			
