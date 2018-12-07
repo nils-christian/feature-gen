@@ -52,6 +52,7 @@ import java.util.Arrays
 import java.util.Collections
 import java.util.Set
 import org.eclipse.xtend.lib.macro.declaration.Visibility
+import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
 
 /**
  * This is the annotation processor for {@link FeatureIDEFeatures}.
@@ -100,20 +101,20 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val unmarshaller = jaxbContext.createUnmarshaller
 		val stream = modelFilePath.contentsAsStream
 		try {
-			return unmarshaller.unmarshal(stream) as FeatureModel
+			return unmarshaller.unmarshal(stream) as FeatureModelType
 		} finally {
 			stream.close
 		}
 	}
 	
-	private def registerFeatureCheckService(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
+	private def registerFeatureCheckService(ClassDeclaration annotatedClass, FeatureModelType featureModel, extension RegisterGlobalsContext context) {
 		val root = featureModel.getRoot()
 		if (root !== null) {
 			getFullQualifiedFeatureCheckServiceClassName(annotatedClass, root.name).registerClass
 		}
 	}
 	
-	private def getRoot(FeatureModel model) {
+	private def getRoot(FeatureModelType model) {
 		val struct = model.struct
 		
 		if (struct.feature !== null) {
@@ -127,21 +128,21 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		}
 	}
 	
-	private def registerSelectedFeatures(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
+	private def registerSelectedFeatures(ClassDeclaration annotatedClass, FeatureModelType featureModel, extension RegisterGlobalsContext context) {
 		val root = featureModel.getRoot()
 		if (root !== null) {
 			getFullQualifiedSelectedFeaturesAnnotationName(annotatedClass, root.name).registerAnnotationType
 		}
 	}
 	
-	private def registerFeature(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
+	private def registerFeature(ClassDeclaration annotatedClass, FeatureModelType featureModel, extension RegisterGlobalsContext context) {
 		val root = featureModel.getRoot()
 		if (root !== null) {
 			getFullQualifiedFeaturesEnumName(annotatedClass, root.name).registerEnumerationType
 		}
 	} 
 	
-	private def registerVariant(ClassDeclaration annotatedClass, FeatureModel featureModel, extension RegisterGlobalsContext context) {
+	private def registerVariant(ClassDeclaration annotatedClass, FeatureModelType featureModel, extension RegisterGlobalsContext context) {
 		val root = featureModel.getRoot()
 		if (root !== null) {
 			registerInterface(getVariantName(annotatedClass, root))
@@ -173,7 +174,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		annotatedClass.final = true
 	}
 	
-	private def transformFeatureCheckService(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
+	private def transformFeatureCheckService(MutableClassDeclaration annotatedClass, FeatureModelType featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
 		val featureCheckService = getFullQualifiedFeatureCheckServiceClassName(annotatedClass, root.name).findClass
 		val featureEnum = getFullQualifiedFeaturesEnumName(annotatedClass, root.name).findEnumerationType
@@ -272,7 +273,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		]
 	}
 	
-	private def transformSelectedFeatures(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
+	private def transformSelectedFeatures(MutableClassDeclaration annotatedClass, FeatureModelType featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
 		val selectedFeatures = getFullQualifiedSelectedFeaturesAnnotationName(annotatedClass, root.name).findAnnotationType
 
@@ -296,7 +297,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		]
 	}
 	
-	private def transformFeature(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
+	private def transformFeature(MutableClassDeclaration annotatedClass, FeatureModelType featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
 		val feature = getFullQualifiedFeaturesEnumName(annotatedClass, root.name).findEnumerationType
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
@@ -323,7 +324,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	}
 	
 		
-	private def transformVariant(MutableClassDeclaration annotatedClass, FeatureModel featureModel, extension TransformationContext context) {
+	private def transformVariant(MutableClassDeclaration annotatedClass, FeatureModelType featureModel, extension TransformationContext context) {
 		val root = featureModel.getRoot()
 		val variant = getVariantName(annotatedClass, root).findInterface
 		variant.docComment = '''
