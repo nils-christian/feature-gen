@@ -122,9 +122,13 @@ final class FeatureIDEFeaturesProcessorTest {
 			public final class RootFeatureCheckService {
 			  private final Set activeFeatures;
 			  
-			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures) {
+			  private final String description;
+			  
+			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures, final String variantName) {
 			    activeFeatures = EnumSet.noneOf( RootFeature.class );
 			    activeFeatures.addAll( selectedFeatures );
+			    
+			    description = "RootFeatureCheckService [" + variantName + "]";
 			  }
 			  
 			  /**
@@ -143,6 +147,11 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( feature, "The feature must not be null." );
 			    
 			    return activeFeatures.contains( feature );
+			  }
+			  
+			  @Override
+			  public String toString() {
+			    return description;
 			  }
 			  
 			  /**
@@ -164,7 +173,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with RootSelectedFeatures." );
 			    final List<RootFeature> selectedFeatures = Arrays.asList( selectedFeaturesAnnotation.value( ) );
 			    
-			    return new RootFeatureCheckService( selectedFeatures );
+			    return new RootFeatureCheckService( selectedFeatures, variant.getSimpleName( ) );
 			  }
 			  
 			  /**
@@ -174,7 +183,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			   * 
 			   */
 			  public static RootFeatureCheckService empty() {
-			    return new RootFeatureCheckService( Collections.emptyList( ) );
+			    return new RootFeatureCheckService( Collections.emptyList( ), "Empty" );
 			  }
 			}
 			
@@ -323,8 +332,6 @@ final class FeatureIDEFeaturesProcessorTest {
 			 */
 			@SuppressWarnings("all")
 			public enum RootFeature {
-			  ROOT_FEATURE,
-			  
 			  F1_FEATURE,
 			  
 			  F2_FEATURE,
@@ -378,9 +385,13 @@ final class FeatureIDEFeaturesProcessorTest {
 			public final class RootFeatureCheckService {
 			  private final Set activeFeatures;
 			  
-			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures) {
+			  private final String description;
+			  
+			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures, final String variantName) {
 			    activeFeatures = EnumSet.noneOf( RootFeature.class );
 			    activeFeatures.addAll( selectedFeatures );
+			    
+			    description = "RootFeatureCheckService [" + variantName + "]";
 			  }
 			  
 			  /**
@@ -399,6 +410,11 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( feature, "The feature must not be null." );
 			    
 			    return activeFeatures.contains( feature );
+			  }
+			  
+			  @Override
+			  public String toString() {
+			    return description;
 			  }
 			  
 			  /**
@@ -420,7 +436,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with RootSelectedFeatures." );
 			    final List<RootFeature> selectedFeatures = Arrays.asList( selectedFeaturesAnnotation.value( ) );
 			    
-			    return new RootFeatureCheckService( selectedFeatures );
+			    return new RootFeatureCheckService( selectedFeatures, variant.getSimpleName( ) );
 			  }
 			  
 			  /**
@@ -430,7 +446,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			   * 
 			   */
 			  public static RootFeatureCheckService empty() {
-			    return new RootFeatureCheckService( Collections.emptyList( ) );
+			    return new RootFeatureCheckService( Collections.emptyList( ), "Empty" );
 			  }
 			}
 			
@@ -555,9 +571,13 @@ final class FeatureIDEFeaturesProcessorTest {
 			public final class RootFeatureCheckService {
 			  private final Set activeFeatures;
 			  
-			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures) {
+			  private final String description;
+			  
+			  private RootFeatureCheckService(final List<RootFeature> selectedFeatures, final String variantName) {
 			    activeFeatures = EnumSet.noneOf( RootFeature.class );
 			    activeFeatures.addAll( selectedFeatures );
+			    
+			    description = "RootFeatureCheckService [" + variantName + "]";
 			  }
 			  
 			  /**
@@ -576,6 +596,11 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( feature, "The feature must not be null." );
 			    
 			    return activeFeatures.contains( feature );
+			  }
+			  
+			  @Override
+			  public String toString() {
+			    return description;
 			  }
 			  
 			  /**
@@ -597,7 +622,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			    Objects.requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with RootSelectedFeatures." );
 			    final List<RootFeature> selectedFeatures = Arrays.asList( selectedFeaturesAnnotation.value( ) );
 			    
-			    return new RootFeatureCheckService( selectedFeatures );
+			    return new RootFeatureCheckService( selectedFeatures, variant.getSimpleName( ) );
 			  }
 			  
 			  /**
@@ -607,7 +632,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			   * 
 			   */
 			  public static RootFeatureCheckService empty() {
-			    return new RootFeatureCheckService( Collections.emptyList( ) );
+			    return new RootFeatureCheckService( Collections.emptyList( ), "Empty" );
 			  }
 			}
 			

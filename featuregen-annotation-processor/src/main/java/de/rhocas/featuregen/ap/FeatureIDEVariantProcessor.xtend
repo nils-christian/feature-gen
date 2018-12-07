@@ -33,6 +33,7 @@ import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.ClassDeclaration
 import org.eclipse.xtend.lib.macro.declaration.EnumerationTypeDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
+import org.eclipse.xtend.lib.macro.declaration.Visibility
 import org.eclipse.xtend.lib.macro.file.FileSystemSupport
 import org.eclipse.xtend.lib.macro.file.Path
 
@@ -50,6 +51,7 @@ final class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 	val jaxbContext = JAXBContext.newInstance(Configuration)
 
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+		addPrivateConstructor(annotatedClass)
 		makeFinal(annotatedClass)
 		
 		val configurationModel = getConfigurationModel(annotatedClass, context)
@@ -57,6 +59,15 @@ final class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 			addSelectedFeaturesAnnotation(configurationModel, annotatedClass, context)
 			addVariantInterface(configurationModel, annotatedClass, context)
 		}
+	}
+	
+	def addPrivateConstructor(MutableClassDeclaration annotatedClass) {
+		annotatedClass.addConstructor [
+			visibility = Visibility.PRIVATE
+			
+			body = '''
+			'''
+		]
 	}
 	
 	def featuresAnnotationCanBeFound(MutableClassDeclaration annotatedClass, extension TransformationContext context) {

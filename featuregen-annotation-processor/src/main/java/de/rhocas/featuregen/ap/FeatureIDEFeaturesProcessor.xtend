@@ -193,13 +193,23 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			type = Set.newTypeReference
 		]
 		
+		featureCheckService.addField('description') [
+			final = true
+			type = String.newTypeReference
+		]
+		
 		featureCheckService.addConstructor [
 			visibility = Visibility.PRIVATE
+			
 			addParameter('selectedFeatures', List.newTypeReference(featureEnum.newSelfTypeReference))
+			addParameter('variantName', String.newTypeReference)
+			
 			
 			body = '''
 				activeFeatures = «EnumSet.newTypeReference».noneOf( «featureEnum.newTypeReference».class );
 				activeFeatures.addAll( selectedFeatures );
+				
+				description = "«featureCheckService.simpleName» [" + variantName + "]";
 			'''
 		]
 
@@ -223,6 +233,15 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 				«Objects.newTypeReference».requireNonNull( feature, "The feature must not be null." );
 				
 				return activeFeatures.contains( feature );
+			'''
+		]
+		
+		featureCheckService.addMethod('toString') [
+			addAnnotation(Override.newAnnotationReference)
+			returnType = String.newTypeReference
+			
+			body = '''
+				return description;
 			'''
 		]
 		
@@ -253,7 +272,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 				«Objects.newTypeReference()».requireNonNull( selectedFeaturesAnnotation, "The variant must be annotated with «selectedFeaturesAnnotation.simpleName»." );
 				final «List.newTypeReference(featureEnum.newSelfTypeReference)» selectedFeatures = «Arrays.newTypeReference()».asList( selectedFeaturesAnnotation.value( ) );
 				
-				return new «featureCheckService.newSelfTypeReference»( selectedFeatures );
+				return new «featureCheckService.newSelfTypeReference»( selectedFeatures, variant.getSimpleName( ) );
 			'''
 		]
 		
@@ -268,7 +287,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 			'''
 			
 			body = '''
-				return new «featureCheckService.newSelfTypeReference»( «Collections.findTypeGlobally.newSelfTypeReference».emptyList( ) );
+				return new «featureCheckService.newSelfTypeReference»( «Collections.findTypeGlobally.newSelfTypeReference».emptyList( ), "Empty" );
 			'''
 		]
 	}
@@ -313,7 +332,9 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 	
 	private def void addFeaturesToEnum(MutableEnumerationTypeDeclaration enumeration, AnnotationReference annotationReference, FeatureType type) {
 		if (type !== null) {
-			enumeration.addValue(type.name.convertToValidSimpleFeatureName(annotationReference)) []
+			if (!Boolean.TRUE.equals(type.abstract)) {
+				enumeration.addValue(type.name.convertToValidSimpleFeatureName(annotationReference)) []
+			}
 			
 			if (type instanceof BranchedFeatureType) {
 				for (feature : type.andOrOrOrAlt) {

@@ -28,6 +28,7 @@ package de.rhocas.featuregen.ap.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,8 +62,8 @@ public final class FeatureGenRuntimeTest {
 	public void featureCheckWithVariant() {
 		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of(Variant1.class);
 
-		assertTrue(featureCheckService.isFeatureActive(FeatureGenTestFeature.FEATUREGENTEST_FEATURE));
 		assertTrue(featureCheckService.isFeatureActive(FeatureGenTestFeature.F2_FEATURE));
+		assertTrue(featureCheckService.isFeatureActive(FeatureGenTestFeature.F4_FEATURE));
 		
 		assertFalse(featureCheckService.isFeatureActive(FeatureGenTestFeature.F51_FEATURE));
 	}
@@ -91,5 +92,19 @@ public final class FeatureGenRuntimeTest {
 		expectedException.expectMessage("The feature must not be null.");
 		featureCheckService.isFeatureActive(null);
 	}
-
+	
+	@Test
+	public void featureCheckServiceToString() {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of(Variant2.class);
+		
+		assertEquals("FeatureGenTestFeatureCheckService [Variant2]", featureCheckService.toString());
+	}
+	
+	@Test
+	public void emptyFeatureCheckServiceToString() {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.empty();
+		
+		assertEquals("FeatureGenTestFeatureCheckService [Empty]", featureCheckService.toString());
+	}
+	
 }

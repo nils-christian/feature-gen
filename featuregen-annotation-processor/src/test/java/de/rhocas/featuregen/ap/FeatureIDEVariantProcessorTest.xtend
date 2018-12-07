@@ -31,6 +31,7 @@ import static org.hamcrest.collection.IsEmptyCollection.empty
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize
 import static org.hamcrest.core.Is.is
 import static org.junit.Assert.assertThat
+import static org.junit.Assert.assertEquals
 import org.eclipse.xtext.diagnostics.Severity
 
 /**
@@ -75,12 +76,12 @@ final class FeatureIDEVariantProcessorTest {
 			}
 			
 			@«FeatureIDEVariant.simpleName»(featuresClass=Features)
-			class Variant {   
+			class Variant {
 			}
 		''', [
 			assertThat(errorsAndWarnings, is(empty()))
 
-			assertThat(getGeneratedCode('test.Variant'), is('''
+			assertEquals('''
 				package test;
 				
 				import de.rhocas.featuregen.ap.FeatureIDEVariant;
@@ -93,8 +94,11 @@ final class FeatureIDEVariantProcessorTest {
 				@RootSelectedFeatures(value = { RootFeature.ROOT_FEATURE, RootFeature.F1_FEATURE })
 				@SuppressWarnings("all")
 				public final class Variant implements RootVariant {
+				  private Variant() {
+				    
+				  }
 				}
-			'''))
+			'''.toString, getGeneratedCode('test.Variant'))
 		])
 	}
 	
@@ -105,7 +109,7 @@ final class FeatureIDEVariantProcessorTest {
 			<featureModel>
 			    <properties/>
 			    <struct>
-			    	<and mandatory="true" name="Root">
+			    	<and mandatory="true" name="Root" abstract="true">
 						<feature name="F1"/>
 						<feature name="F2"/>
 					</and>
@@ -136,7 +140,7 @@ final class FeatureIDEVariantProcessorTest {
 		''', [
 			assertThat(errorsAndWarnings, is(empty()))
 
-			assertThat(getGeneratedCode('test.Variant'), is('''
+			assertEquals('''
 				package test;
 				
 				import de.rhocas.featuregen.ap.FeatureIDEVariant;
@@ -146,11 +150,14 @@ final class FeatureIDEVariantProcessorTest {
 				import test.RootVariant;
 				
 				@FeatureIDEVariant(featuresClass = Features.class)
-				@RootSelectedFeatures(value = { RootFeature.PREFIX_ROOT_SUFFIX, RootFeature.PREFIX_F1_SUFFIX })
+				@RootSelectedFeatures(value = RootFeature.PREFIX_F1_SUFFIX)
 				@SuppressWarnings("all")
 				public final class Variant implements RootVariant {
+				  private Variant() {
+				    
+				  }
 				}
-			'''))
+			'''.toString, getGeneratedCode('test.Variant'))
 		])
 	}
 	
