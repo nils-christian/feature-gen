@@ -28,8 +28,7 @@ Your annotated variant class has to reference the feature class. In the followin
 	
 Now feature-gen generates everything to use the feature model in your application. Assuming your root feature is named *Root*, you can do the following:
 
-	RootFeatureCheckService featureCheckService = new RootFeatureCheckService( );
-	featureCheckService.setActiveVariant( Variant1.class );
+	RootFeatureCheckService featureCheckService = RootFeatureCheckService.of( Variant1.class );
 
 	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
 	   ...
