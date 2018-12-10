@@ -181,10 +181,10 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
 		featureCheckService.final = true
 		featureCheckService.docComment = '''
-		This service allows to check which features are currently active.<br/>
-		<br/>
-		Note that instances of this class are immutable and thus inherent thread safe.<br/>
-		<br/>
+		This service allows to check which features are currently active.<br>
+		<br>
+		Note that instances of this class are immutable and thus inherent thread safe.<br>
+		<br>
 		This service is generated.
 		'''
 
@@ -297,8 +297,8 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val selectedFeatures = getFullQualifiedSelectedFeaturesAnnotationName(annotatedClass, root.name).findAnnotationType
 
 		selectedFeatures.docComment = '''
-		This annotation is used to mark which features the annotated variant provides.<br/>
-		<br/>
+		This annotation is used to mark which features the annotated variant provides.<br>
+		<br>
 		This annotation is generated.
 		'''
 
@@ -322,8 +322,8 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val annotation = annotatedClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
 		
 		feature.docComment = '''
-		This enumeration contains all available features.<br/>
-		<br/>
+		This enumeration contains all available features.<br>
+		<br>
 		This enumeration is generated.
 		'''
 		
@@ -351,8 +351,8 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		val root = featureModel.getRoot()
 		val variant = getVariantName(annotatedClass, root).findInterface
 		variant.docComment = '''
-		This is a marker interface for all variants.<br/>
-		<br/>
+		This is a marker interface for all variants.<br>
+		<br>
 		This interface is generated.
 		'''
 	}

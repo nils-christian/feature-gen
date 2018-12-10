@@ -86,8 +86,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This enumeration contains all available features.<br/>
-			 * <br/>
+			 * This enumeration contains all available features.<br>
+			 * <br>
 			 * This enumeration is generated.
 			 * 
 			 */
@@ -116,10 +116,10 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootVariant;
 			
 			/**
-			 * This service allows to check which features are currently active.<br/>
-			 * <br/>
-			 * Note that instances of this class are immutable and thus inherent thread safe.<br/>
-			 * <br/>
+			 * This service allows to check which features are currently active.<br>
+			 * <br>
+			 * Note that instances of this class are immutable and thus inherent thread safe.<br>
+			 * <br>
 			 * This service is generated.
 			 * 
 			 */
@@ -203,8 +203,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootFeature;
 			
 			/**
-			 * This annotation is used to mark which features the annotated variant provides.<br/>
-			 * <br/>
+			 * This annotation is used to mark which features the annotated variant provides.<br>
+			 * <br>
 			 * This annotation is generated.
 			 * 
 			 */
@@ -222,8 +222,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This is a marker interface for all variants.<br/>
-			 * <br/>
+			 * This is a marker interface for all variants.<br>
+			 * <br>
 			 * This interface is generated.
 			 * 
 			 */
@@ -330,8 +330,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This enumeration contains all available features.<br/>
-			 * <br/>
+			 * This enumeration contains all available features.<br>
+			 * <br>
 			 * This enumeration is generated.
 			 * 
 			 */
@@ -379,10 +379,10 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootVariant;
 			
 			/**
-			 * This service allows to check which features are currently active.<br/>
-			 * <br/>
-			 * Note that instances of this class are immutable and thus inherent thread safe.<br/>
-			 * <br/>
+			 * This service allows to check which features are currently active.<br>
+			 * <br>
+			 * Note that instances of this class are immutable and thus inherent thread safe.<br>
+			 * <br>
 			 * This service is generated.
 			 * 
 			 */
@@ -466,8 +466,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootFeature;
 			
 			/**
-			 * This annotation is used to mark which features the annotated variant provides.<br/>
-			 * <br/>
+			 * This annotation is used to mark which features the annotated variant provides.<br>
+			 * <br>
 			 * This annotation is generated.
 			 * 
 			 */
@@ -485,8 +485,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This is a marker interface for all variants.<br/>
-			 * <br/>
+			 * This is a marker interface for all variants.<br>
+			 * <br>
 			 * This interface is generated.
 			 * 
 			 */
@@ -538,8 +538,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This enumeration contains all available features.<br/>
-			 * <br/>
+			 * This enumeration contains all available features.<br>
+			 * <br>
 			 * This enumeration is generated.
 			 * 
 			 */
@@ -565,10 +565,10 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootVariant;
 			
 			/**
-			 * This service allows to check which features are currently active.<br/>
-			 * <br/>
-			 * Note that instances of this class are immutable and thus inherent thread safe.<br/>
-			 * <br/>
+			 * This service allows to check which features are currently active.<br>
+			 * <br>
+			 * Note that instances of this class are immutable and thus inherent thread safe.<br>
+			 * <br>
 			 * This service is generated.
 			 * 
 			 */
@@ -652,8 +652,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			import test.RootFeature;
 			
 			/**
-			 * This annotation is used to mark which features the annotated variant provides.<br/>
-			 * <br/>
+			 * This annotation is used to mark which features the annotated variant provides.<br>
+			 * <br>
 			 * This annotation is generated.
 			 * 
 			 */
@@ -671,8 +671,8 @@ final class FeatureIDEFeaturesProcessorTest {
 			package test;
 			
 			/**
-			 * This is a marker interface for all variants.<br/>
-			 * <br/>
+			 * This is a marker interface for all variants.<br>
+			 * <br>
 			 * This interface is generated.
 			 * 
 			 */
