@@ -125,7 +125,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			 */
 			@SuppressWarnings("all")
 			public final class RootFeatureCheckService {
-			  private final Set activeFeatures;
+			  private final Set<RootFeature> activeFeatures;
 			  
 			  private final String description;
 			  
@@ -388,7 +388,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			 */
 			@SuppressWarnings("all")
 			public final class RootFeatureCheckService {
-			  private final Set activeFeatures;
+			  private final Set<RootFeature> activeFeatures;
 			  
 			  private final String description;
 			  
@@ -574,7 +574,7 @@ final class FeatureIDEFeaturesProcessorTest {
 			 */
 			@SuppressWarnings("all")
 			public final class RootFeatureCheckService {
-			  private final Set activeFeatures;
+			  private final Set<RootFeature> activeFeatures;
 			  
 			  private final String description;
 			  

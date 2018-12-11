@@ -190,7 +190,7 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 
 		featureCheckService.addField('activeFeatures') [
 			final = true
-			type = Set.newTypeReference
+			type = Set.newTypeReference(featureEnum.newSelfTypeReference)
 		]
 		
 		featureCheckService.addField('description') [
