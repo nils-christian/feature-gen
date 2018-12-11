@@ -50,6 +50,36 @@
 							</arguments>
 						</configuration>
 					</execution>
+					<execution> 
+						<id>generateVariant1</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>de.rhocas.featuregen.generator.FeatureIDEVariantGenerator</mainClass>
+							<arguments> 
+								<argument>${project.basedir}/src/main/resources/Variant1.xml</argument>
+								<argument>${project.build.directory}/generated-sources</argument>
+								<argument>de.rhocas.featuregen.ap.test.feature.Variant1</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution> 
+						<id>generateVariant2</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>de.rhocas.featuregen.generator.FeatureIDEVariantGenerator</mainClass>
+							<arguments> 
+								<argument>${project.basedir}/src/main/resources/Variant2.xml</argument>
+								<argument>${project.build.directory}/generated-sources</argument>
+								<argument>de.rhocas.featuregen.ap.test.feature.Variant2</argument>
+							</arguments>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
