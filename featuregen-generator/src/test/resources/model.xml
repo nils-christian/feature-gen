@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+    <properties/>
+    <struct>
+    	<and mandatory="true" name="Root">
+			<feature name="F1">
+				<description>This is Feature 1.</description>
+			</feature>
+		</and>
+    </struct>
+</featureModel>
