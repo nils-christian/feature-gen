@@ -171,6 +171,9 @@ final class FeatureIDEVariantGenerator {
 			@«getSimpleSelectedFeaturesAnnotationName(rootName)»( {«selectedFeatures.join(', ')»} )
 			public final class «simpleName» implements «getSimpleVariantInterfaceName(rootName)» {
 				
+				private «simpleName»( ) {
+				}
+				
 			}
 		'''.toString.getBytes(StandardCharsets.UTF_8))
 	}

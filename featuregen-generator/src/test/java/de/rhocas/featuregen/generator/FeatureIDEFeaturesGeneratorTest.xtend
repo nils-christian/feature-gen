@@ -26,9 +26,7 @@
 
 package de.rhocas.featuregen.generator
 
-import java.nio.file.Files
 import java.util.Map
-import java.util.stream.Collectors
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -505,14 +503,10 @@ final class FeatureIDEFeaturesGeneratorTest {
 		expectedException.expectMessage('Model file "non/existing/file" can not be found.')
 		generator.generate(#['non/existing/file', outputFolderPath, 'test'])
 	}
-	
+	 
 	private def Map<String, String> collectGeneratedFiles() {
-		Files.walk(temporaryFolder.root.toPath)
-		     .filter[Files.isRegularFile(it)]
-		     .collect(Collectors.toMap(
-		     	[path | path.fileName.toString],
-		     	[path | Files.readAllLines(path).join(System.lineSeparator)]
-		     ))
+		val generatorTestHelper = new GeneratorTestHelper()
+		generatorTestHelper.collectGeneratedFiles(temporaryFolder.root)
 	}
 	
 }
