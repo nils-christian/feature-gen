@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extendedFeatureModel>
+    <properties/>
+    <struct>
+        <and abstract="true" mandatory="true" name="Root">
+            <and name="F1">
+                <attribute name="Attribute0" type="boolean" unit="" value="true"/>
+                <and mandatory="true" name="F2">
+                    <feature name="F2.1"/>
+                    <feature name="F2.2"/>
+                </and>
+                <or name="F3">
+                    <feature name="F3.1"/>
+                    <feature name="F3.2"/>
+                </or>
+                <alt name="F4">
+                    <feature name="F4.1"/>
+                    <feature name="F4.2"/>
+                </alt>
+                <and name="F5">
+                    <feature name="F5.1"/>
+                    <feature name="F5.2"/>
+                </and>
+            </and>
+        </and>
+    </struct>
+    <constraints>
+        <rule>
+            <description>
+Abc
+</description>
+            <eq>
+                <disj>
+                    <var>F4</var>
+                    <disj>
+                        <var>F3</var>
+                        <var>F1</var>
+                    </disj>
+                </disj>
+                <disj>
+                    <var>F3</var>
+                    <disj>
+                        <var>F4</var>
+                        <var>F3</var>
+                    </disj>
+                </disj>
+            </eq>
+        </rule>
+    </constraints>
+    <calculations Auto="true" Constraints="true" Features="true" Redundant="true" Tautology="true"/>
+    <comments/>
+    <featureOrder userDefined="true">
+        <feature name="F1"/>
+        <feature name="F2"/>
+        <feature name="F2.1"/>
+        <feature name="F3"/>
+        <feature name="F3.1"/>
+        <feature name="F3.2"/>
+        <feature name="F2.2"/>
+        <feature name="F4"/>
+        <feature name="F4.1"/>
+        <feature name="F4.2"/>
+    </featureOrder>
+</extendedFeatureModel>
