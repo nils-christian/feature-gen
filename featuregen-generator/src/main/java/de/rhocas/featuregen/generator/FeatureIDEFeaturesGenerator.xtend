@@ -121,7 +121,7 @@ final class FeatureIDEFeaturesGenerator {
 			}
 			
 		val suffix = 
-			if (args.size >= 4) {
+			if (args.size >= 5) {
 				args.get(4)
 			} else {
 				'_FEATURE'
@@ -213,9 +213,7 @@ final class FeatureIDEFeaturesGenerator {
 		val List<FeatureType> features = new ArrayList
 		
 		if (type !== null) {
-			if (!Boolean.TRUE.equals(type.abstract)) {
-				features += type
-			}
+			features += type
 			
 			if (type instanceof BranchedFeatureType) {
 				for (feature : type.andOrOrOrAlt) {
@@ -254,7 +252,7 @@ final class FeatureIDEFeaturesGenerator {
 				/**
 				 * The selected features.
 				 */
-				«getSimpleFeaturesEnumName(rootName)» value( );
+				«getSimpleFeaturesEnumName(rootName)»[] value( );
 				
 			}
 		'''.toString.getBytes(StandardCharsets.UTF_8))
