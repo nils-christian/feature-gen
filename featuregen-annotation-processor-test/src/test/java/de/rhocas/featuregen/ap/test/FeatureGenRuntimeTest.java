@@ -47,64 +47,64 @@ import de.rhocas.featuregen.ap.test.variant.Variant2;
 public final class FeatureGenRuntimeTest {
 
 	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-	
+	public ExpectedException expectedException = ExpectedException.none( );
+
 	@Test
-	public void featureCheckWithoutVariant() {
-		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.empty();
-		for (final FeatureGenTestFeature feature : FeatureGenTestFeature.values()) {
-			final boolean featureActive = featureCheckService.isFeatureActive(feature);
-			assertFalse(featureActive);
+	public void featureCheckWithoutVariant( ) {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.empty( );
+		for ( final FeatureGenTestFeature feature : FeatureGenTestFeature.values( ) ) {
+			final boolean featureActive = featureCheckService.isFeatureActive( feature );
+			assertFalse( featureActive );
 		}
 	}
 
 	@Test
-	public void featureCheckWithVariant() {
-		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of(Variant1.class);
+	public void featureCheckWithVariant( ) {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of( Variant1.class );
 
-		assertTrue(featureCheckService.isFeatureActive(FeatureGenTestFeature.F2_FEATURE));
-		assertTrue(featureCheckService.isFeatureActive(FeatureGenTestFeature.F4_FEATURE));
-		
-		assertFalse(featureCheckService.isFeatureActive(FeatureGenTestFeature.F51_FEATURE));
+		assertTrue( featureCheckService.isFeatureActive( FeatureGenTestFeature.F2_FEATURE ) );
+		assertTrue( featureCheckService.isFeatureActive( FeatureGenTestFeature.F4_FEATURE ) );
+
+		assertFalse( featureCheckService.isFeatureActive( FeatureGenTestFeature.F51_FEATURE ) );
 	}
-	
+
 	@Test
-	public void featureCheckWithTwoVariants() {
-		final FeatureGenTestFeatureCheckService featureCheckServiceVariant1 = FeatureGenTestFeatureCheckService.of(Variant1.class);
-		final FeatureGenTestFeatureCheckService featureCheckServiceVariant2 = FeatureGenTestFeatureCheckService.of(Variant2.class);
-		
-		assertFalse(featureCheckServiceVariant1.isFeatureActive(FeatureGenTestFeature.F51_FEATURE));
-		assertTrue(featureCheckServiceVariant2.isFeatureActive(FeatureGenTestFeature.F51_FEATURE));
+	public void featureCheckWithTwoVariants( ) {
+		final FeatureGenTestFeatureCheckService featureCheckServiceVariant1 = FeatureGenTestFeatureCheckService.of( Variant1.class );
+		final FeatureGenTestFeatureCheckService featureCheckServiceVariant2 = FeatureGenTestFeatureCheckService.of( Variant2.class );
+
+		assertFalse( featureCheckServiceVariant1.isFeatureActive( FeatureGenTestFeature.F51_FEATURE ) );
+		assertTrue( featureCheckServiceVariant2.isFeatureActive( FeatureGenTestFeature.F51_FEATURE ) );
 	}
-	
+
 	@Test
-	public void featureCheckWithNullVariant() {
-		expectedException.expect(NullPointerException.class);
-		expectedException.expectMessage("The variant must not be null.");
-		FeatureGenTestFeatureCheckService.of(null);
+	public void featureCheckWithNullVariant( ) {
+		expectedException.expect( NullPointerException.class );
+		expectedException.expectMessage( "The variant must not be null." );
+		FeatureGenTestFeatureCheckService.of( null );
 	}
-	
+
 	@Test
-	public void featureCheckWithNullFeature() {
-		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of(Variant1.class);
-		
-		expectedException.expect(NullPointerException.class);
-		expectedException.expectMessage("The feature must not be null.");
-		featureCheckService.isFeatureActive(null);
+	public void featureCheckWithNullFeature( ) {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of( Variant1.class );
+
+		expectedException.expect( NullPointerException.class );
+		expectedException.expectMessage( "The feature must not be null." );
+		featureCheckService.isFeatureActive( null );
 	}
-	
+
 	@Test
-	public void featureCheckServiceToString() {
-		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of(Variant2.class);
-		
-		assertEquals("FeatureGenTestFeatureCheckService [Variant2]", featureCheckService.toString());
+	public void featureCheckServiceToString( ) {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.of( Variant2.class );
+
+		assertEquals( "FeatureGenTestFeatureCheckService [Variant2]", featureCheckService.toString( ) );
 	}
-	
+
 	@Test
-	public void emptyFeatureCheckServiceToString() {
-		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.empty();
-		
-		assertEquals("FeatureGenTestFeatureCheckService [Empty]", featureCheckService.toString());
+	public void emptyFeatureCheckServiceToString( ) {
+		final FeatureGenTestFeatureCheckService featureCheckService = FeatureGenTestFeatureCheckService.empty( );
+
+		assertEquals( "FeatureGenTestFeatureCheckService [Empty]", featureCheckService.toString( ) );
 	}
-	
+
 }
