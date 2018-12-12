@@ -27,9 +27,15 @@
 package de.rhocas.featuregen.generator
 
 import de.rhocas.featuregen.featureide.model.configuration.Configuration
+import de.rhocas.featuregen.featureide.model.feature.BranchedFeatureType
+import de.rhocas.featuregen.featureide.model.feature.FeatureModel
+import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
+import de.rhocas.featuregen.featureide.model.feature.FeatureType
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.util.ArrayList
+import java.util.List
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.annotations.Accessors
 
@@ -62,6 +68,7 @@ final class FeatureIDEVariantGenerator {
 	 * 		The arguments for the generator. This array must contain at least three entries. The arguments are as following:
 	 *      <ul>
 	 *      	<li>The path to the FeatureIDE configuration model file.</li>
+	 *          <li>The path to the FeatureIDE feature model file.</li>
 	 *          <li>The path to the output folder.</li>
 	 *          <li>The package name for the newly generated variant.</li>
 	 *          <li>The simple class name of the new variant.</li>
@@ -71,7 +78,7 @@ final class FeatureIDEVariantGenerator {
 	 *      </ul>
 	 * 
 	 * @throws IllegalArgumentException
-	 * 		If the number of arguments is invalid or if the model file can not be found.		
+	 * 		If the number of arguments is invalid or if one of the model files can not be found.		
 	 * 
 	 * @since 1.1.0
 	 */
@@ -82,39 +89,46 @@ final class FeatureIDEVariantGenerator {
 	}
 	
 	private def Parameters convertAndCheckParameters(String[] args) {
-		if (args.size < 5) {
-			throw new IllegalArgumentException('''Invalid number of arguments. Expected 5, but was «args.size».''')
+		if (args.size < 6) {
+			throw new IllegalArgumentException('''Invalid number of arguments. Expected 6, but was «args.size».''')
 		}
 
-		val modelFilePath = args.get(0)
-		val modelFile = new File(modelFilePath)
-		if (!modelFile.isFile) {
-			throw new IllegalArgumentException('''Model file "«modelFilePath»" can not be found.''')
+		val configurationModelFilePath = args.get(0)
+		val configurationModelFile = new File(configurationModelFilePath)
+		if (!configurationModelFile.isFile) {
+			throw new IllegalArgumentException('''Model file "«configurationModelFilePath»" can not be found.''')
 		}
-		val configurationModel = readConfigurationModel(modelFile)
+		val configurationModel = readConfigurationModel(configurationModelFile)
 		
-		val outputFolderPath = args.get(1)
+		val featureModelFilePath = args.get(1)
+		val featureModelFile = new File(featureModelFilePath)
+		if (!featureModelFile.isFile) {
+			throw new IllegalArgumentException('''Model file "«featureModelFilePath»" can not be found.''')
+		}
+		val featureModel = readFeatureModel(featureModelFile)
+		
+		val outputFolderPath = args.get(2)
 		val outputFolder = new File(outputFolderPath)
 		
-		val packageName = args.get(2)
-		val className = args.get(3)
-		val featuresPackageName = args.get(4)
+		val packageName = args.get(3)
+		val className = args.get(4)
+		val featuresPackageName = args.get(5)
 		
 		val prefix = 
-			if (args.size >= 6) {
-				args.get(5)
+			if (args.size >= 7) {
+				args.get(6)
 			} else {
 				''
 			}
 			
 		val suffix = 
-			if (args.size >= 7) {
-				args.get(6)
+			if (args.size >= 8) {
+				args.get(7)
 			} else {
 				'_FEATURE'
 			}
 			
-		new Parameters(configurationModel, packageName, className, outputFolder, featuresPackageName, prefix, suffix)
+		new Parameters(configurationModel, featureModel, packageName, className, outputFolder, featuresPackageName, prefix, suffix)
 	}
 	
 	private def Configuration readConfigurationModel(File modelFile) {
@@ -123,15 +137,24 @@ final class FeatureIDEVariantGenerator {
 		return unmarshaller.unmarshal(modelFile) as Configuration
 	}
 	
+	private def FeatureModelType readFeatureModel(File modelFile) {
+		val jaxbContext = JAXBContext.newInstance(FeatureModel)
+		val unmarshaller = jaxbContext.createUnmarshaller
+		return unmarshaller.unmarshal(modelFile) as FeatureModelType
+	}
+	
 	private def generateVariantClass(Parameters parameters) {
 		val extension nameProvider = new NameProvider
 		val extension featureNameConverter = new FeatureNameConverter
 		val rootName = parameters.configurationModel.root.name
 		val simpleName = parameters.className
 		
+		val abstractFeatures = parameters.featureModel.root.findAbstractFeatures.map[name]
+		
 		val selectedFeatures = parameters.configurationModel
 										 .feature
 										 .map[name]
+										 .filter[!abstractFeatures.contains(it)]
 		                                 .map[convertToValidSimpleFeatureName(it, parameters.prefix, parameters.suffix)]
 		                                 .map[getSimpleFeaturesEnumName(rootName) + '.' + it]
 		
@@ -152,6 +175,38 @@ final class FeatureIDEVariantGenerator {
 		'''.toString.getBytes(StandardCharsets.UTF_8))
 	}
 	
+	private def FeatureType getRoot(FeatureModelType model) {
+		val struct = model.struct
+
+		if (struct.feature !== null) {
+			struct.feature
+		} else if (struct.and !== null) {
+			struct.and
+		} else if (struct.or !== null) {
+			struct.or
+		} else {
+			struct.alt
+		}
+	}
+	
+	private def List<FeatureType> findAbstractFeatures(FeatureType type) {
+		val List<FeatureType> features = new ArrayList
+		
+		if (type !== null) {
+			if (Boolean.TRUE.equals(type.abstract)) {
+				features += type
+			}
+			
+			if (type instanceof BranchedFeatureType) {
+				for (feature : type.andOrOrOrAlt) {
+					features += findAbstractFeatures(feature.value)
+				}
+			}
+		}
+		
+		features
+	}
+	
 	
 	private def getRoot(Configuration configurationModel) {
 		val features = configurationModel.feature
@@ -170,6 +225,7 @@ final class FeatureIDEVariantGenerator {
 	private static final class Parameters {
 		
 		val Configuration configurationModel
+		val FeatureModelType featureModel
 		val String packageName
 		val String className
 		val File outputFolder

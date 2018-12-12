@@ -213,7 +213,9 @@ final class FeatureIDEFeaturesGenerator {
 		val List<FeatureType> features = new ArrayList
 		
 		if (type !== null) {
-			features += type
+			if (!Boolean.TRUE.equals(type.abstract)) {
+				features += type
+			}
 			
 			if (type instanceof BranchedFeatureType) {
 				for (feature : type.andOrOrOrAlt) {

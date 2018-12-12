@@ -64,13 +64,14 @@
                             <mainClass>de.rhocas.featuregen.generator.FeatureIDEVariantGenerator</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/Variant1.xml</argument>
+                                <argument>${project.basedir}/src/main/resources/model.xml</argument>
                                 <argument>${project.build.directory}/generated-sources</argument>
                                 <argument>de.rhocas.featuregen.ap.test.variant</argument>
                                 <argument>Variant1</argument>
                                 <argument>de.rhocas.featuregen.ap.test.feature</argument>
                             </arguments>
                         </configuration>
-                    </execution>
+                    </execution> 
                     <execution>
                         <id>generateVariant2</id>
                         <phase>generate-sources</phase>
@@ -81,6 +82,7 @@
                             <mainClass>de.rhocas.featuregen.generator.FeatureIDEVariantGenerator</mainClass>
                             <arguments>
                                 <argument>${project.basedir}/src/main/resources/Variant2.xml</argument>
+                                <argument>${project.basedir}/src/main/resources/model.xml</argument>
                                 <argument>${project.build.directory}/generated-sources</argument>
                                 <argument>de.rhocas.featuregen.ap.test.variant</argument>
                                 <argument>Variant2</argument>
