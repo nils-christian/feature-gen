@@ -66,6 +66,7 @@ public final class FeatureGenRuntimeTest {
 		assertTrue( featureCheckService.isFeatureActive( FeatureGenTestFeature.F4_FEATURE ) );
 
 		assertFalse( featureCheckService.isFeatureActive( FeatureGenTestFeature.F51_FEATURE ) );
+		assertFalse( featureCheckService.isFeatureActive( FeatureGenTestFeature.F42_FEATURE ) );
 	}
 
 	@Test

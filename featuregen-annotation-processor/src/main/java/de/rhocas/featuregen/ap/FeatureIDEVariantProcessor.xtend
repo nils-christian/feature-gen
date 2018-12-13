@@ -171,7 +171,8 @@ final class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		val featuresClass = getAnnotatedFeaturesClass(annotatedClass, context) as ClassDeclaration
 		val annotationReference = featuresClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
 		
-		features.map[it.name]
+		features.filter[automatic == 'selected' || manual == 'selected']
+		        .map[it.name]
 			    .map[convertToValidSimpleFeatureName(it, annotationReference)]
 			    .map[featureEnum.findDeclaredValue(it)]
 		        .filterNull

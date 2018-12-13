@@ -34,7 +34,7 @@ package de.rhocas.featuregen.generator
 package final class FeatureNameConverter {
 	
 	def String convertToValidSimpleFeatureName(String rawFeatureName, String prefix, String suffix) {
-		val simpleFeatureName = prefix + rawFeatureName.replaceAll('(\\W)', '') + suffix
+		val simpleFeatureName = prefix + rawFeatureName.replaceAll('\\s', '_').replaceAll('(\\W)', '') + suffix
 		
 		simpleFeatureName.toUpperCase
 	}

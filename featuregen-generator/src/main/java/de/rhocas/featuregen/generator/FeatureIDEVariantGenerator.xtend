@@ -32,8 +32,6 @@ import de.rhocas.featuregen.featureide.model.feature.FeatureModel
 import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
 import de.rhocas.featuregen.featureide.model.feature.FeatureType
 import java.io.File
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
 import java.util.ArrayList
 import java.util.List
 import javax.xml.bind.JAXBContext
@@ -153,13 +151,14 @@ final class FeatureIDEVariantGenerator {
 		
 		val selectedFeatures = parameters.configurationModel
 										 .feature
+										 .filter[automatic == 'selected' || manual == 'selected']
 										 .map[name]
 										 .filter[!abstractFeatures.contains(it)]
 		                                 .map[convertToValidSimpleFeatureName(it, parameters.prefix, parameters.suffix)]
 		                                 .map[getSimpleFeaturesEnumName(rootName) + '.' + it]
 		
 		val outputFile = prepareOutputFile(parameters)
-		Files.write(outputFile.toPath, '''
+		val fileContent = '''
 			package «parameters.packageName»;
 			
 			«IF parameters.packageName != parameters.featuresPackageName»
@@ -175,7 +174,10 @@ final class FeatureIDEVariantGenerator {
 				}
 				
 			}
-		'''.toString.getBytes(StandardCharsets.UTF_8))
+		'''
+		
+		val generatorHelper = new GeneratorHelper()
+		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
 	private def FeatureType getRoot(FeatureModelType model) {

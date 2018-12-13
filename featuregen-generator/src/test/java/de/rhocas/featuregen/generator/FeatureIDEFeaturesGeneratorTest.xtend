@@ -59,6 +59,8 @@ final class FeatureIDEFeaturesGeneratorTest {
 		assertEquals('''
 			package test;
 			
+			import de.rhocas.featuregen.lib.FeatureGenLabel;
+			
 			/**
 			 * This enumeration contains all available features.<br>
 			 * <br>
@@ -66,10 +68,12 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			public enum RootFeature {
 				
+				@FeatureGenLabel( "Root" )
 				ROOT_FEATURE,
 				/**
 				 * This is Feature 1.
 				 */
+				@FeatureGenLabel( "F1" )
 				F1_FEATURE
 			}'''.toString, generatedFiles.get('RootFeature.java'))
 			
@@ -163,6 +167,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			import java.lang.annotation.RetentionPolicy;
 			import java.lang.annotation.Target;
 			import java.lang.annotation.ElementType;
+			import de.rhocas.featuregen.lib.FeatureGenSelectedFeatures;
 			
 			/**
 			 * This annotation is used to mark which features the annotated variant provides.<br>
@@ -171,6 +176,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			@Retention( RetentionPolicy.RUNTIME )
 			@Target( ElementType.TYPE )
+			@FeatureGenSelectedFeatures( )
 			public @interface RootSelectedFeatures {
 				
 				/**
@@ -205,6 +211,8 @@ final class FeatureIDEFeaturesGeneratorTest {
 		assertEquals('''
 			package test;
 			
+			import de.rhocas.featuregen.lib.FeatureGenLabel;
+			
 			/**
 			 * This enumeration contains all available features.<br>
 			 * <br>
@@ -212,18 +220,31 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			public enum RootFeature {
 				
+				@FeatureGenLabel( "F1" )
 				F1_FEATURE,
+				@FeatureGenLabel( "F2" )
 				F2_FEATURE,
+				@FeatureGenLabel( "F2.1" )
 				F21_FEATURE,
+				@FeatureGenLabel( "F2.2" )
 				F22_FEATURE,
+				@FeatureGenLabel( "F3" )
 				F3_FEATURE,
+				@FeatureGenLabel( "F3.1" )
 				F31_FEATURE,
+				@FeatureGenLabel( "F3.2" )
 				F32_FEATURE,
+				@FeatureGenLabel( "F4" )
 				F4_FEATURE,
+				@FeatureGenLabel( "F4.1" )
 				F41_FEATURE,
+				@FeatureGenLabel( "F4.2" )
 				F42_FEATURE,
+				@FeatureGenLabel( "F5" )
 				F5_FEATURE,
+				@FeatureGenLabel( "F5.1" )
 				F51_FEATURE,
+				@FeatureGenLabel( "F5.2" )
 				F52_FEATURE
 			}'''.toString, generatedFiles.get('RootFeature.java'))
 			
@@ -317,6 +338,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			import java.lang.annotation.RetentionPolicy;
 			import java.lang.annotation.Target;
 			import java.lang.annotation.ElementType;
+			import de.rhocas.featuregen.lib.FeatureGenSelectedFeatures;
 			
 			/**
 			 * This annotation is used to mark which features the annotated variant provides.<br>
@@ -325,6 +347,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			@Retention( RetentionPolicy.RUNTIME )
 			@Target( ElementType.TYPE )
+			@FeatureGenSelectedFeatures( )
 			public @interface RootSelectedFeatures {
 				
 				/**
@@ -359,6 +382,8 @@ final class FeatureIDEFeaturesGeneratorTest {
 		assertEquals('''
 			package test;
 			
+			import de.rhocas.featuregen.lib.FeatureGenLabel;
+			
 			/**
 			 * This enumeration contains all available features.<br>
 			 * <br>
@@ -366,10 +391,12 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			public enum RootFeature {
 				
+				@FeatureGenLabel( "Root" )
 				PREFIX_ROOT_SUFFIX,
 				/**
 				 * This is Feature 1.
 				 */
+				@FeatureGenLabel( "F1" )
 				PREFIX_F1_SUFFIX
 			}'''.toString, generatedFiles.get('RootFeature.java'))
 			
@@ -463,6 +490,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			import java.lang.annotation.RetentionPolicy;
 			import java.lang.annotation.Target;
 			import java.lang.annotation.ElementType;
+			import de.rhocas.featuregen.lib.FeatureGenSelectedFeatures;
 			
 			/**
 			 * This annotation is used to mark which features the annotated variant provides.<br>
@@ -471,6 +499,7 @@ final class FeatureIDEFeaturesGeneratorTest {
 			 */
 			@Retention( RetentionPolicy.RUNTIME )
 			@Target( ElementType.TYPE )
+			@FeatureGenSelectedFeatures( )
 			public @interface RootSelectedFeatures {
 				
 				/**

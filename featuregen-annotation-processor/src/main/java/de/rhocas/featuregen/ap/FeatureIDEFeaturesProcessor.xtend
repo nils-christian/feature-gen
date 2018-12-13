@@ -53,6 +53,8 @@ import java.util.Collections
 import java.util.Set
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
+import de.rhocas.featuregen.lib.FeatureGenSelectedFeatures
+import de.rhocas.featuregen.lib.FeatureGenLabel
 
 /**
  * This is the annotation processor for {@link FeatureIDEFeatures}.
@@ -308,7 +310,8 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		selectedFeatures.addAnnotation(Target.newAnnotationReference [
 			setEnumValue('value', (ElementType.findTypeGlobally as EnumerationTypeDeclaration).findDeclaredValue(ElementType.TYPE.name))
 		])
-		
+		selectedFeatures.addAnnotation(FeatureGenSelectedFeatures.newAnnotationReference)
+
 		selectedFeatures.addAnnotationTypeElement('value') [ 
 			docComment = 'The selected features.'		
 				
@@ -327,20 +330,24 @@ final class FeatureIDEFeaturesProcessor extends AbstractClassProcessor {
 		This enumeration is generated.
 		'''
 		
-		addFeaturesToEnum(feature, annotation, root)
+		addFeaturesToEnum(feature, annotation, root, context)
 	}
 	
-	private def void addFeaturesToEnum(MutableEnumerationTypeDeclaration enumeration, AnnotationReference annotationReference, FeatureType type) {
+	private def void addFeaturesToEnum(MutableEnumerationTypeDeclaration enumeration, AnnotationReference annotationReference, FeatureType type, extension TransformationContext context) {
 		if (type !== null) {
 			if (!Boolean.TRUE.equals(type.abstract)) {
 				enumeration.addValue(type.name.convertToValidSimpleFeatureName(annotationReference)) [
 					docComment = type.description 
+					
+					addAnnotation(FeatureGenLabel.newAnnotationReference [
+						setStringValue('value', type.name)	
+					])
 				]
 			}
 			
 			if (type instanceof BranchedFeatureType) {
 				for (feature : type.andOrOrOrAlt) {
-					addFeaturesToEnum(enumeration, annotationReference, feature.value)
+					addFeaturesToEnum(enumeration, annotationReference, feature.value, context)
 				}
 			}
 		}

@@ -4,7 +4,7 @@
     <feature automatic="selected" name="F1"/>
     <feature automatic="selected" name="F2"/>
     <feature automatic="selected" name="F4"/>
-    <feature automatic="unselected" name="F4.1"/>
+    <feature automatic="unselected" name="F4.1"/> 
     <feature manual="selected" name="F4.2"/>
     <feature automatic="selected" name="F5"/>
     <feature manual="selected" name="F5.1"/>

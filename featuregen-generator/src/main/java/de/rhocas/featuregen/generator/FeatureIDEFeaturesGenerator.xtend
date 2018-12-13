@@ -30,22 +30,22 @@ import de.rhocas.featuregen.featureide.model.feature.BranchedFeatureType
 import de.rhocas.featuregen.featureide.model.feature.FeatureModel
 import de.rhocas.featuregen.featureide.model.feature.FeatureModelType
 import de.rhocas.featuregen.featureide.model.feature.FeatureType
+import de.rhocas.featuregen.lib.FeatureGenSelectedFeatures
 import java.io.File
 import java.lang.annotation.ElementType
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 import java.lang.annotation.Target
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
 import java.util.ArrayList
 import java.util.Arrays
+import java.util.Collections
 import java.util.EnumSet
 import java.util.List
 import java.util.Objects
 import java.util.Set
 import javax.xml.bind.JAXBContext
 import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.Collections
+import de.rhocas.featuregen.lib.FeatureGenLabel
 
 /**
  * This class generates the features from a FeatureIDE model file.
@@ -142,7 +142,7 @@ final class FeatureIDEFeaturesGenerator {
 		
 		val simpleName = getSimpleVariantInterfaceName(rootName)
 		val outputFile = prepareOutputFile(parameters, simpleName)
-		Files.write(outputFile.toPath, '''
+		val fileContent = '''
 			package «parameters.packageName»;
 			
 			/**
@@ -153,7 +153,10 @@ final class FeatureIDEFeaturesGenerator {
 			public interface «simpleName» {
 				
 			}
-		'''.toString.getBytes(StandardCharsets.UTF_8))
+		'''
+		
+		val generatorHelper = new GeneratorHelper()
+		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
 	private def File prepareOutputFile(Parameters parameters, String elementName) {
@@ -187,8 +190,10 @@ final class FeatureIDEFeaturesGenerator {
 		
 		val simpleName = getSimpleFeaturesEnumName(rootName)
 		val outputFile = prepareOutputFile(parameters, simpleName)
-		Files.write(outputFile.toPath, '''
+		val fileContent = '''
 			package «parameters.packageName»;
+			
+			import «FeatureGenLabel.name»;
 			
 			/**
 			 * This enumeration contains all available features.<br>
@@ -203,10 +208,14 @@ final class FeatureIDEFeaturesGenerator {
 					 * «feature.description»
 					 */
 					«ENDIF»
+					@«FeatureGenLabel.simpleName»( "«feature.name»" )
 					«feature.name.convertToValidSimpleFeatureName(parameters.prefix, parameters.suffix)»
 				«ENDFOR»
 			}
-		'''.toString.getBytes(StandardCharsets.UTF_8))
+		'''
+		
+		val generatorHelper = new GeneratorHelper()
+		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
 	private def List<FeatureType> linearizeFeatures(FeatureType type) {
@@ -234,13 +243,14 @@ final class FeatureIDEFeaturesGenerator {
 		
 		val simpleName = getSimpleSelectedFeaturesAnnotationName(rootName)
 		val outputFile = prepareOutputFile(parameters, simpleName)
-		Files.write(outputFile.toPath, '''
+		val fileContent = '''
 			package «parameters.packageName»;
 			
 			import «Retention.name»;
 			import «RetentionPolicy.name»;
 			import «Target.name»;
 			import «ElementType.name»;
+			import «FeatureGenSelectedFeatures.name»;
 			
 			/**
 			 * This annotation is used to mark which features the annotated variant provides.<br>
@@ -249,6 +259,7 @@ final class FeatureIDEFeaturesGenerator {
 			 */
 			@«Retention.simpleName»( «RetentionPolicy.simpleName».«RetentionPolicy.RUNTIME.name» )
 			@«Target.simpleName»( «ElementType.simpleName».«ElementType.TYPE.name» )
+			@«FeatureGenSelectedFeatures.simpleName»( )
 			public @interface «simpleName» {
 				
 				/**
@@ -257,7 +268,10 @@ final class FeatureIDEFeaturesGenerator {
 				«getSimpleFeaturesEnumName(rootName)»[] value( );
 				
 			}
-		'''.toString.getBytes(StandardCharsets.UTF_8))
+		'''
+		
+		val generatorHelper = new GeneratorHelper()
+		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
 	private def generateFeatureCheckServiceClass(Parameters parameters) {
@@ -270,7 +284,7 @@ final class FeatureIDEFeaturesGenerator {
 		val simpleFeaturesEnumName = getSimpleFeaturesEnumName(rootName)
 		
 		val outputFile = prepareOutputFile(parameters, simpleName)
-		Files.write(outputFile.toPath, '''
+		val fileContent = '''
 			package «parameters.packageName»;
 			
 			import «Set.name»;
@@ -352,7 +366,10 @@ final class FeatureIDEFeaturesGenerator {
 				}
 				
 			}
-		'''.toString.getBytes(StandardCharsets.UTF_8))
+		'''
+		
+		val generatorHelper = new GeneratorHelper()
+		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
 	@Accessors

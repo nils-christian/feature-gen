@@ -24,23 +24,25 @@
 //                                                                                //
 ////////////////////////////////////////////////////////////////////////////////////
 
-package de.rhocas.featuregen.ap
+package de.rhocas.featuregen.generator
 
-import org.eclipse.xtend.lib.macro.declaration.AnnotationReference
+import java.io.File
+import java.nio.file.Files
+import java.nio.charset.StandardCharsets
 
 /**
- * This is a helper class to convert the names of the features to valid Java identifiers.
+ * This is a helper class for the generators.
  * 
  * @author Nils Christian Ehmke
  */
-package final class FeatureNameConverter {
+package final class GeneratorHelper {
 	
-	def String convertToValidSimpleFeatureName(String rawFeatureName, AnnotationReference annotation) {
-		val prefix = annotation.getStringValue('prefix')
-		val suffix = annotation.getStringValue('suffix')
-		val simpleFeatureName = prefix + rawFeatureName.replaceAll('\\s', '_').replaceAll('(\\W)', '') + suffix
+	def void writeContentToFileIfChanged(String newFileContent, File outputFile) {
+		val oldFileContent = if (outputFile.isFile) new String(Files.readAllBytes(outputFile.toPath), StandardCharsets.UTF_8) else ''
 		
-		simpleFeatureName.toUpperCase
+		if (oldFileContent != newFileContent) {
+			Files.write(outputFile.toPath, newFileContent.getBytes(StandardCharsets.UTF_8))
+		}
 	}
 	
 }
