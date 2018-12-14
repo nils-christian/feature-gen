@@ -52,7 +52,7 @@ import de.rhocas.featuregen.lib.FeatureGenLabel
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 2.0.0
  */
 final class FeatureIDEFeaturesGenerator {
 
@@ -62,7 +62,7 @@ final class FeatureIDEFeaturesGenerator {
 	 * @param args
 	 * 		The command line arguments. See {@link #generate(String[])} for details.
 	 * 
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	def static void main(String[] args) {
 		val generator = new FeatureIDEFeaturesGenerator()
@@ -85,7 +85,7 @@ final class FeatureIDEFeaturesGenerator {
 	 * @throws IllegalArgumentException
 	 * 		If the number of arguments is invalid or if the model file can not be found.		
 	 * 
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	def void generate(String[] args) {
 		val parameters = convertAndCheckParameters(args)
@@ -98,7 +98,7 @@ final class FeatureIDEFeaturesGenerator {
 	
 	private def Parameters convertAndCheckParameters(String[] args) {
 		if (args.size < 3) {
-			throw new IllegalArgumentException('''Invalid number of arguments. Expected 3, but was «args.size».''')
+			throw new IllegalArgumentException('''Invalid number of arguments. Expected at least 3, but was «args.size».''')
 		}
 
 		val modelFilePath = args.get(0)
@@ -372,7 +372,7 @@ final class FeatureIDEFeaturesGenerator {
 		generatorHelper.writeContentToFileIfChanged(fileContent, outputFile)
 	}
 	
-	@Accessors
+	@Accessors(NONE)
 	private static final class Parameters {
 		
 		val FeatureModelType featureModel

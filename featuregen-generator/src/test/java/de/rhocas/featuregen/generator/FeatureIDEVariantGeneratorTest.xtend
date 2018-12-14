@@ -143,6 +143,15 @@ final class FeatureIDEVariantGeneratorTest {
 		generator.generate(#['non/existing/file', '', outputFolderPath, 'test', 'Variant', 'test'])
 	}
 	
+	@Test
+	def void missingArgumentsShouldResultInError() {
+		val generator = new FeatureIDEVariantGenerator()
+		
+		expectedException.expect(IllegalArgumentException)
+		expectedException.expectMessage('Invalid number of arguments. Expected at least 6, but was 1.')
+		generator.generate(#['file'])
+	}
+	
 	private def Map<String, String> collectGeneratedFiles() {
 		val generatorTestHelper = new GeneratorTestHelper()
 		generatorTestHelper.collectGeneratedFiles(temporaryFolder.root)

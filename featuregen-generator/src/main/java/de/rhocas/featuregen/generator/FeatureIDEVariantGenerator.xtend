@@ -42,7 +42,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * 
  * @author Nils Christian Ehmke
  * 
- * @since 1.1.0
+ * @since 2.0.0
  */
 final class FeatureIDEVariantGenerator {
 	
@@ -52,7 +52,7 @@ final class FeatureIDEVariantGenerator {
 	 * @param args
 	 * 		The command line arguments. See {@link #generate(String[])} for details.
 	 * 
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	def static void main(String[] args) {
 		val generator = new FeatureIDEVariantGenerator()
@@ -78,7 +78,7 @@ final class FeatureIDEVariantGenerator {
 	 * @throws IllegalArgumentException
 	 * 		If the number of arguments is invalid or if one of the model files can not be found.		
 	 * 
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	def void generate(String[] args) {
 		val parameters = convertAndCheckParameters(args)
@@ -88,7 +88,7 @@ final class FeatureIDEVariantGenerator {
 	
 	private def Parameters convertAndCheckParameters(String[] args) {
 		if (args.size < 6) {
-			throw new IllegalArgumentException('''Invalid number of arguments. Expected 6, but was «args.size».''')
+			throw new IllegalArgumentException('''Invalid number of arguments. Expected at least 6, but was «args.size».''')
 		}
 
 		val configurationModelFilePath = args.get(0)
@@ -226,7 +226,7 @@ final class FeatureIDEVariantGenerator {
 		new File(outputFileParent, '''«parameters.className».java''')
 	}
 	
-	@Accessors
+	@Accessors(NONE)
 	private static final class Parameters {
 		
 		val Configuration configurationModel

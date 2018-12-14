@@ -61,7 +61,7 @@ final class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		}
 	}
 	
-	def addPrivateConstructor(MutableClassDeclaration annotatedClass) {
+	private def addPrivateConstructor(MutableClassDeclaration annotatedClass) {
 		annotatedClass.addConstructor [
 			visibility = Visibility.PRIVATE
 			
@@ -70,7 +70,7 @@ final class FeatureIDEVariantProcessor extends AbstractClassProcessor {
 		]
 	}
 	
-	def featuresAnnotationCanBeFound(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
+	private def featuresAnnotationCanBeFound(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
 		val featuresClass = getAnnotatedFeaturesClass(annotatedClass, context) as ClassDeclaration
 		val annotationReference = featuresClass.findAnnotation(FeatureIDEFeatures.findTypeGlobally)
 		if (annotationReference !== null) {

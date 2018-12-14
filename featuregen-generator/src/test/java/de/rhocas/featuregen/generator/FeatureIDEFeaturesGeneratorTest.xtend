@@ -532,6 +532,15 @@ final class FeatureIDEFeaturesGeneratorTest {
 		expectedException.expectMessage('Model file "non/existing/file" can not be found.')
 		generator.generate(#['non/existing/file', outputFolderPath, 'test'])
 	}
+	
+	@Test
+	def void missingArgumentsShouldResultInError() {
+		val generator = new FeatureIDEFeaturesGenerator()
+		
+		expectedException.expect(IllegalArgumentException)
+		expectedException.expectMessage('Invalid number of arguments. Expected at least 3, but was 1.')
+		generator.generate(#['file'])
+	}
 	 
 	private def Map<String, String> collectGeneratedFiles() {
 		val generatorTestHelper = new GeneratorTestHelper()
