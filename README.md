@@ -16,6 +16,8 @@ The Java API for both approaches is the same. Assuming your root feature is name
 	
 ### Xtend Active Annotation
 
+A simple example for the active annotations can be found [here](https://github.com/nils-christian/feature-gen-examples/tree/master/featuregen-examples-annotation-processor).
+
 In order to use the active annotations from feature-gen in your project, you need to add the Maven dependencies to your project.
 
 	<dependency>
@@ -46,6 +48,8 @@ Your annotated variant class has to reference the feature class. In the followin
 Now feature-gen generates everything to use the feature model in your application.
 
 ### Standalone Generator
+
+A simple example for the generator can be found [here](https://github.com/nils-christian/feature-gen-examples/tree/master/featuregen-examples-generator).
 
 In order to use the standalone generator from feature-gen in your project, you need to add the Maven dependencies to your project.
 
