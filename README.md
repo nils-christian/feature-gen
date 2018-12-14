@@ -5,6 +5,14 @@ feature-gen is a small open-source framework that lets you generate typesafe fea
 
 ## How do I use it?
 You can generate the features and variants either with the standalone generator or with the Xtend based active annotations. The standalone generator requires Java 8 and the annotation processor requires additionaly Xtend 2.14 or newer. 
+
+The Java API for both approaches is the same. Assuming your root feature is named *Root*, you can do the following:
+
+	RootFeatureCheckService featureCheckService = RootFeatureCheckService.of( Variant1.class );
+
+	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
+	   ...
+	}
 	
 ### Xtend Active Annotation
 
@@ -35,13 +43,7 @@ Your annotated variant class has to reference the feature class. In the followin
 	class Variant1 { 
 	}
 	
-Now feature-gen generates everything to use the feature model in your application. Assuming your root feature is named *Root*, you can do the following:
-
-	RootFeatureCheckService featureCheckService = RootFeatureCheckService.of( Variant1.class );
-
-	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
-	   ...
-	}
+Now feature-gen generates everything to use the feature model in your application.
 
 ### Standalone Generator
 
@@ -66,13 +68,7 @@ The *FeatureIDEVariantGenerator* requires at least six parameters: The path to t
 
 An easy way to include the generator in your IDE is to use the *exec-maven-plugin*. Please consult the Wiki for this.
 
-Once you called the generators, feature-gen generates everything to use the feature model in your application. Assuming your root feature is named *Root*, you can do the following:
-
-	RootFeatureCheckService featureCheckService = RootFeatureCheckService.of( Variant1.class );
-
-	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
-	   ...
-	}
+Once you called the generators, feature-gen generates everything to use the feature model in your application. 
 	
 ## License
 
