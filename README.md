@@ -4,11 +4,20 @@
 feature-gen is a small open-source framework that lets you generate typesafe feature checks from FeatureIDE models
 
 ## How do I use it?
-In order to use feature-gen in your project, simply add the Maven dependency to your pom.xml. The library requires Java 8 and Xtend 2.14 or newer.
+You can generate the features and variants either with the standalone generator or with the Xtend based active annotations. The standalone generator requires Java 8 and the annotation processor requires additionaly Xtend 2.14 or newer. 
+	
+### Xtend Active Annotation
+
+In order to use the active annotations from feature-gen in your project, you need to add the Maven dependencies to your project.
 
 	<dependency>
 		<groupId>de.rhocas.featuregen</groupId>
 		<artifactId>featuregen-annotation-processor</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	<dependency>
+		<groupId>de.rhocas.featuregen</groupId>
+		<artifactId>featuregen-lib</artifactId>
 		<version>2.0.0</version>
 	</dependency>
   
@@ -34,6 +43,37 @@ Now feature-gen generates everything to use the feature model in your applicatio
 	   ...
 	}
 
+### Standalone Generator
+
+In order to use the standalone generator from feature-gen in your project, you need to add the Maven dependencies to your project.
+
+	<dependency>
+		<groupId>de.rhocas.featuregen</groupId>
+		<artifactId>featuregen-generator</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	<dependency>
+		<groupId>de.rhocas.featuregen</groupId>
+		<artifactId>featuregen-lib</artifactId>
+		<version>2.0.0</version>
+	</dependency>
+	
+Now you can call the classes *FeatureIDEFeaturesGenerator* and *FeatureIDEVariantGenerator* as Java applications and generate the features and variants from your models. 
+
+The *FeatureIDEFeaturesGenerator* requires at least three parameters: The path to the FeatureIDE feature model file, the path to the output folder, and the package name of the newly generated classes. Optionally you can also provide the prefix and suffix which are appended to each feature.
+
+The *FeatureIDEVariantGenerator* requires at least six parameters: The path to the FeatureIDE configuration model file, the path to the feature model file, the path to the output folder, the package name of the newly generated variant, the simple class name of the new variant, and the package name of the features. Optionally you can also provide the prefix and suffix which are appended to each feature.
+
+An easy way to include the generator in your IDE is to use the *exec-maven-plugin*. Please consult the Wiki for this.
+
+Once you called the generators, feature-gen generates everything to use the feature model in your application. Assuming your root feature is named *Root*, you can do the following:
+
+	RootFeatureCheckService featureCheckService = RootFeatureCheckService.of( Variant1.class );
+
+	if ( featureCheckService.isFeatureActive( RootFeature.MY_FEATURE ) ) {
+	   ...
+	}
+	
 ## License
 
 feature-gen is licensed under the MIT-License. The complete license text can be found in the provided file LICENSE.
