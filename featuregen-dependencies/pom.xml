@@ -6,7 +6,7 @@
 
     <groupId>de.rhocas.featuregen</groupId>
     <artifactId>featuregen-dependencies</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <description>feature-gen is a small open-source framework that lets you generate typesafe feature checks from FeatureIDE models.</description>
@@ -33,27 +33,27 @@
             <dependency>
                 <groupId>de.rhocas.featuregen</groupId>
                 <artifactId>featuregen-annotation-processor</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.rhocas.featuregen</groupId>
                 <artifactId>featuregen-feature-ide-configuration-model</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.rhocas.featuregen</groupId>
                 <artifactId>featuregen-feature-ide-feature-model</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.rhocas.featuregen</groupId>
                 <artifactId>featuregen-generator</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>de.rhocas.featuregen</groupId>
                 <artifactId>featuregen-lib</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.xtend</groupId>
