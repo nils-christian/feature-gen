@@ -1,3 +1,4 @@
+![logo](https://github.com/nils-christian/feature-gen/blob/master/logo/feature-gen-logo.png)
 [![Build Status](https://travis-ci.org/nils-christian/feature-gen.svg?branch=master)](https://travis-ci.org/nils-christian/feature-gen)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.rhocas.featuregen/featuregen/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.rhocas.featuregen/featuregen)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
