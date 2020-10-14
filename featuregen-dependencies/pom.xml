@@ -24,7 +24,7 @@
 		<jacoco.version>0.8.2</jacoco.version>
 
 		<xtend.version>2.14.0</xtend.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<hamcrest.version>1.3</hamcrest.version>
 	</properties>
 
